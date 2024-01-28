@@ -1,4 +1,6 @@
 import { Metadata } from "next"
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import { Toaster } from "@/components/ui/sonner"
 import { siteConfig } from "@/config/site"
 import { fontSans } from "@/lib/fonts"
@@ -38,33 +40,38 @@ interface RootLayoutProps {
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
+  const queryClient = new QueryClient();
+
   return (
     <>
-      <html lang="en" suppressHydrationWarning>
-        <head />
-        <body
-          className={cn(
-            "min-h-screen bg-background font-sans antialiased",
-            fontSans.className
-          )}
-        >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+      <QueryClientProvider client={queryClient}>
+        <html lang="en" suppressHydrationWarning>
+          <head />
+          <body
+            className={cn(
+              "min-h-screen bg-background font-sans antialiased",
+              fontSans.className
+            )}
           >
-            <div vaul-drawer-wrapper="">
-              <div className="relative flex min-h-screen flex-col bg-background justify-between">
-                {children}
-                <SiteFooter />
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <div vaul-drawer-wrapper="">
+                <div className="relative flex min-h-screen flex-col bg-background justify-between">
+                  {children}
+                  <SiteFooter />
+                </div>
               </div>
-            </div>
-            <TailwindIndicator />
-            <Toaster />
-          </ThemeProvider>
-        </body>
-      </html>
+              <TailwindIndicator />
+              <Toaster />
+            </ThemeProvider>
+          </body>
+        </html>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </>
   )
 }

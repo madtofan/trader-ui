@@ -1,17 +1,19 @@
-import axios from "axios";
 import { ListTemplateEndpointResponse } from "@/bindings/templating/ListTemplateEndpointResponse";
 import { removeTemplatingEndpoint, templatingEndpoint } from "@/config/api";
 import { AddTemplateEndpointRequest } from "@/bindings/templating/AddTemplateEndpointRequest";
 import { TemplateEndpointResponse } from "@/bindings/templating/TemplateEndpointResponse";
+import { initializeAxiosClient } from ".";
+
+const axiosClient = initializeAxiosClient();
 
 class TemplatingService {
   async getTemplateList() {
-    const res = await axios.get<ListTemplateEndpointResponse>(templatingEndpoint());
+    const res = await axiosClient.get<ListTemplateEndpointResponse>(templatingEndpoint());
     return res;
   }
 
   async addTemplate(data: AddTemplateEndpointRequest) {
-    const res = await axios.post<TemplateEndpointResponse>(templatingEndpoint(), {
+    const res = await axiosClient.post<TemplateEndpointResponse>(templatingEndpoint(), {
       method: "POST",
       body: JSON.stringify(data)
     });
@@ -19,7 +21,7 @@ class TemplatingService {
   }
 
   async removeTemplate(templateName: string) {
-    const res = await axios.delete<TemplateEndpointResponse>(removeTemplatingEndpoint(templateName));
+    const res = await axiosClient.delete<TemplateEndpointResponse>(removeTemplatingEndpoint(templateName));
     return res;
   }
 }

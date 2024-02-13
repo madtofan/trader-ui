@@ -2,41 +2,62 @@ import { AddGroupEndpointRequest } from "@/bindings/notification/AddGroupEndpoin
 import { SendNotificationEndpointRequest } from "@/bindings/notification/SendNotificationEndpointRequest";
 import notificationService from "@/services/notificationService";
 import { useMutation, useQuery } from "react-query";
+import { MutationOptions } from ".";
 
-type MutationOptions = Parameters<typeof useMutation>[2];
-
-const useSendNotification = (data: SendNotificationEndpointRequest, options?: MutationOptions) => {
-  return useMutation(
-    ["sendNotifcation"],
-    () => {
-      return notificationService.sendNotification(data);
-    },
-    options,
+const useSendNotification = (token: string, options?: MutationOptions) => {
+  return useMutation({
+    mutationKey: [["sendNotifcation"]],
+    mutationFn: (data: SendNotificationEndpointRequest) => notificationService.sendNotification(data, token),
+    ...options,
+  }
   );
 }
 
 const useGetNotifications = () => {
-  return useQuery({ queryKey: [["getNotifications"]], queryFn: notificationService.getNotifications, retry: 1 });
+  return useQuery({
+    queryKey: [["getNotifications"]],
+    queryFn: notificationService.getNotifications,
+    retry: 0
+  });
 }
 
 const useGetNotificationLogs = () => {
-  return useQuery({ queryKey: [["getNotificationLogs"]], queryFn: notificationService.getNotificationLogs });
+  return useQuery({
+    queryKey: [["getNotificationLogs"]],
+    queryFn: notificationService.getNotificationLogs
+  });
 }
 
-const useSubscribeToGroup = (groupName: string) => {
-  return useMutation({ mutationKey: [["subscribeToGroup", groupName]], mutationFn: () => notificationService.subscribeToGroup(groupName) });
+const useSubscribeToGroup = (options?: MutationOptions) => {
+  return useMutation({
+    mutationKey: [["subscribeToGroup"]],
+    mutationFn: ({ groupName }: { groupName: string }) => notificationService.subscribeToGroup(groupName),
+    ...options
+  });
 }
 
-const useUnsubscribeFromGroup = (groupName: string) => {
-  return useMutation({ mutationKey: [["unsubscribeFromGroup", groupName]], mutationFn: () => notificationService.unsubscribeFromGroup(groupName) });
+const useUnsubscribeFromGroup = (options?: MutationOptions) => {
+  return useMutation({
+    mutationKey: [["unsubscribeFromGroup"]],
+    mutationFn: ({ groupName }: { groupName: string }) => notificationService.unsubscribeFromGroup(groupName),
+    ...options
+  });
 }
 
-const useAddNotificationGroup = (data: AddGroupEndpointRequest) => {
-  return useMutation({ mutationKey: [["addNotificationGroup"]], mutationFn: () => notificationService.addGroup(data) });
+const useAddNotificationGroup = (options?: MutationOptions) => {
+  return useMutation({
+    mutationKey: [["addNotificationGroup"]],
+    mutationFn: (data: AddGroupEndpointRequest) => notificationService.addGroup(data),
+    ...options
+  });
 }
 
-const useRemoveNotificationGroup = (groupName: string, adminEmail: string) => {
-  return useMutation({ mutationKey: [["removeNotificationGroup", groupName]], mutationFn: () => notificationService.removeGroup(groupName, adminEmail) });
+const useRemoveNotificationGroup = (options?: MutationOptions) => {
+  return useMutation({
+    mutationKey: [["removeNotificationGroup"]],
+    mutationFn: ({ groupName, adminEmail }: { groupName: string, adminEmail: string }) => notificationService.removeGroup(groupName, adminEmail),
+    ...options
+  });
 }
 
 export {

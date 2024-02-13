@@ -1,6 +1,4 @@
 import { Metadata } from "next"
-import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
 import { Toaster } from "@/components/ui/sonner"
 import { siteConfig } from "@/config/site"
 import { fontSans } from "@/lib/fonts"
@@ -24,7 +22,6 @@ export const metadata: Metadata = {
   authors: [
     {
       name: siteConfig.author,
-      url: siteConfig.links.twitter,
     },
   ],
   creator: siteConfig.author,
@@ -40,38 +37,34 @@ interface RootLayoutProps {
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  const queryClient = new QueryClient();
-
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <html lang="en" suppressHydrationWarning>
-          <head />
-          <body
-            className={cn(
-              "min-h-screen bg-background font-sans antialiased",
-              fontSans.className
-            )}
+      <html lang="en" suppressHydrationWarning>
+        <head />
+        <body
+          className={cn(
+            "min-h-screen bg-background font-sans antialiased",
+            fontSans.className
+          )}
+          suppressHydrationWarning={true}
+        >
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
           >
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <div vaul-drawer-wrapper="">
-                <div className="relative flex min-h-screen flex-col bg-background justify-between">
-                  {children}
-                  <SiteFooter />
-                </div>
+            <div vaul-drawer-wrapper="">
+              <div className="relative flex min-h-screen flex-col bg-background justify-between">
+                {children}
+                <SiteFooter />
               </div>
-              <TailwindIndicator />
-              <Toaster />
-            </ThemeProvider>
-          </body>
-        </html>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
+            </div>
+            <TailwindIndicator />
+            <Toaster />
+          </ThemeProvider>
+        </body>
+      </html>
     </>
   )
 }

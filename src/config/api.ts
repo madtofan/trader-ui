@@ -1,8 +1,8 @@
-const API_SERVER = "http://localhost:4000/api";
+export const API_SERVER = "http://127.0.0.1:8000/api";
 
 export const userEndpoint = () => `${API_SERVER}/user`;
 export const loginEndpoint = () => `${API_SERVER}/user/login`;
-export const refreshEndpoint = () => `${API_SERVER}/user/login`;
+export const refreshEndpoint = () => `${API_SERVER}/user/refresh`;
 export const verifyEndpoint = (token: string) => `${API_SERVER}/user/verify/${token}`;
 export const rolesEndpoint = () => `${API_SERVER}/user/roles`;
 export const roleEndpoint = (roleName: string) => `${API_SERVER}/user/roles/${roleName}`;

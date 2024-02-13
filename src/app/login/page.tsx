@@ -1,9 +1,45 @@
+"use client"
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { useLogin } from "@/hooks/userApi";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form";
+import { z } from "zod"
 import Link from "next/link";
+import { Form, } from "@/components/ui/form";
+import FormInput from "@/components/ui/form-input";
+import { useRouter } from "next/navigation";
 
-export default function Login() {
+const formSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6, "Password must be at least 6 characters").max(32, "Password must be at most 32 characters"),
+})
+
+export default function LoginPage() {
+  const refreshToken = localStorage.getItem("refreshToken");
+  const { mutateAsync: login } = useLogin();
+  const router = useRouter();
+
+  if (refreshToken && window) {
+    router.push('/dashboard');
+  }
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  })
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    login({
+      email: values.email,
+      password: values.password
+    }).then(() => {
+      router.push('/dashboard');
+    });
+  }
+
   return (
     <div className="mx-auto max-w-screen-xl max-h-screen px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-lg text-center">
@@ -14,84 +50,35 @@ export default function Login() {
         </p>
       </div>
 
-      <form action="" className="mx-auto mb-0 mt-8 max-w-md space-y-4">
-        <div>
-          <Label htmlFor="email" className="sr-only">Email</Label>
-
-          <div className="relative">
-            <Input
-              type="email"
-              className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-              placeholder="Enter email"
-            />
-
-            <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
-                />
-              </svg>
-            </span>
+      <Form {...form}>
+        <form className="mx-auto mb-0 mt-8 max-w-md space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+          <FormInput
+            control={form.control}
+            name="email"
+            inputType="email"
+            placeholder="Email"
+            inputClassName="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+            icon="email"
+          />
+          <FormInput
+            control={form.control}
+            name="password"
+            inputType="password"
+            placeholder="Password"
+            inputClassName="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+            icon="password"
+          />
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-gray-500">
+              No account?
+              <Link className="underline pl-1" href="/register">Sign up</Link>
+            </p>
+            <Button type="submit">
+              Sign in
+            </Button>
           </div>
-        </div>
-
-        <div>
-          <Label htmlFor="password" className="sr-only">Password</Label>
-
-          <div className="relative">
-            <Input
-              type="password"
-              className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-              placeholder="Enter password"
-            />
-
-            <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                />
-              </svg>
-            </span>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-gray-500">
-            No account?
-            <Link className="underline" href="">Sign up</Link>
-          </p>
-
-          <Button
-            type="submit"
-          >
-            Sign in
-          </Button>
-        </div>
-      </form>
+        </form>
+      </Form>
     </div>
   )
 }

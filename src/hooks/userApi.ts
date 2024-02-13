@@ -6,44 +6,39 @@ import { LoginEndpointRequest } from "@/bindings/user/LoginEndpointRequest";
 import { AddRolePermissionRequest } from "@/bindings/user/AddRolePermissionRequest";
 import { AuthorizeRevokeUserRoleRequest } from "@/bindings/user/AuthorizeRevokeUserRoleRequest";
 import { AuthorizeRevokeRolePermissionRequest } from "@/bindings/user/AuthorizeRevokeRolePermissionRequest";
+import { MutationOptions } from ".";
 
 const useCurrentUser = () => {
   return useQuery(["currentUser"], () => { return userService.getCurrentUser(); });
 };
 
-const useRegisterUser = (data: RegisterEndpointRequest, options?: any) => {
+const useRegisterUser = (options?: MutationOptions) => {
   return useMutation(
-    () => {
-      return userService.registerUser(data);
-    },
-    ...options,
+    {
+      mutationKey: ["registerUser"],
+      mutationFn: (data: RegisterEndpointRequest) => userService.registerUser(data),
+      ...options,
+    }
   );
 };
 
-const useUpdateUser = (data: UpdateEndpointRequest, options?: any) => {
+const useUpdateUser = (options?: MutationOptions) => {
   return useMutation(
-    () => {
-      return userService.updateUser(data);
-    },
-    ...options,
+    {
+      mutationKey: ["updateUser"],
+      mutationFn: (data: UpdateEndpointRequest) => userService.updateUser(data),
+      ...options,
+    }
   );
 };
 
-const useLogin = (data: LoginEndpointRequest, options?: any) => {
+const useLogin = (options?: MutationOptions) => {
   return useMutation(
-    () => {
-      return userService.login(data);
-    },
-    ...options,
-  );
-};
-
-const useRefreshToken = (data: LoginEndpointRequest, options?: any) => {
-  return useMutation(
-    () => {
-      return userService.login(data);
-    },
-    ...options,
+    {
+      mutationKey: ["login"],
+      mutationFn: (data: LoginEndpointRequest) => userService.login(data),
+      ...options,
+    }
   );
 };
 
@@ -55,21 +50,23 @@ const useGetRoles = () => {
   return useQuery(["getRoles"], () => { return userService.getRoles(); });
 };
 
-const useAddRole = (data: AddRolePermissionRequest, options?: any) => {
+const useAddRole = (data: AddRolePermissionRequest, options?: MutationOptions) => {
   return useMutation(
-    () => {
-      return userService.addRole(data);
-    },
-    ...options,
+    {
+      mutationKey: ["addRole"],
+      mutationFn: () => userService.addRole(data),
+      ...options,
+    }
   );
 };
 
-const useDeleteRole = (roleName: string, options?: any) => {
+const useDeleteRole = (options?: MutationOptions) => {
   return useMutation(
-    () => {
-      return userService.deleteRole(roleName);
-    },
-    ...options,
+    {
+      mutationKey: ["deleteRole"],
+      mutationFn: ({ roleName }: { roleName: string }) => userService.deleteRole(roleName),
+      ...options,
+    }
   );
 };
 
@@ -77,57 +74,63 @@ const useGetPermissions = () => {
   return useQuery(["getPermissions"], () => { return userService.getPermissions(); });
 };
 
-const useAddPermission = (data: AddRolePermissionRequest, options?: any) => {
+const useAddPermission = (options?: MutationOptions) => {
   return useMutation(
-    () => {
-      return userService.addPermission(data);
-    },
-    ...options,
+    {
+      mutationKey: ["addPermission"],
+      mutationFn: (data: AddRolePermissionRequest) => userService.addPermission(data),
+      ...options,
+    }
   );
 };
 
-const useDeletePermission = (permissionName: string, options?: any) => {
+const useDeletePermission = (options?: MutationOptions) => {
   return useMutation(
-    () => {
-      return userService.deletePermission(permissionName);
-    },
-    ...options,
+    {
+      mutationKey: ["deletePermission"],
+      mutationFn: ({ permissionName }: { permissionName: string }) => userService.deletePermission(permissionName),
+      ...options,
+    }
   );
 };
 
-const useAuthorizeUser = (userId: string, data: AuthorizeRevokeUserRoleRequest, options?: any) => {
+const useAuthorizeUser = (options?: MutationOptions) => {
   return useMutation(
-    () => {
-      return userService.authorizeUser(userId, data);
-    },
-    ...options,
+    {
+      mutationKey: ["authorizeUser"],
+      mutationFn: ({ userId, data }: { userId: string, data: AuthorizeRevokeUserRoleRequest }) => userService.authorizeUser(userId, data),
+      ...options,
+    }
   );
 };
 
-const useRevokeUser = (userId: string, data: AuthorizeRevokeUserRoleRequest, options?: any) => {
+const useRevokeUser = (userId: string, data: AuthorizeRevokeUserRoleRequest, options?: MutationOptions) => {
   return useMutation(
-    () => {
-      return userService.authorizeUser(userId, data);
-    },
-    ...options,
+    {
+      mutationKey: ["revokeUser"],
+      mutationFn: () => userService.authorizeUser(userId, data),
+      ...options,
+    }
   );
 };
 
-const useAuthorizeRole = (userId: string, data: AuthorizeRevokeRolePermissionRequest, options?: any) => {
+const useAuthorizeRole = (userId: string, data: AuthorizeRevokeRolePermissionRequest, options?: MutationOptions) => {
   return useMutation(
-    () => {
-      return userService.authorizeRole(userId, data);
-    },
-    ...options,
+    {
+      mutationKey: ["authorizeRole"],
+      mutationFn: () => userService.authorizeRole(userId, data),
+      ...options,
+    }
   );
 };
 
-const useRevokeRole = (userId: string, data: AuthorizeRevokeRolePermissionRequest, options?: any) => {
+const useRevokeRole = (userId: string, data: AuthorizeRevokeRolePermissionRequest, options?: MutationOptions) => {
   return useMutation(
-    () => {
-      return userService.revokeRole(userId, data);
-    },
-    ...options,
+    {
+      mutationKey: ["revokeRole"],
+      mutationFn: () => userService.revokeRole(userId, data),
+      ...options,
+    }
   );
 };
 
@@ -136,7 +139,6 @@ export {
   useRegisterUser,
   useUpdateUser,
   useLogin,
-  useRefreshToken,
   useVerifyRegistration,
   useGetRoles,
   useAddRole,

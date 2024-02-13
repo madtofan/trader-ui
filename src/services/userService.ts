@@ -3,7 +3,6 @@ import { authorizeRoleEndpoint, authorizeUserEndpoint, loginEndpoint, permission
 import { RegisterEndpointRequest } from "@/bindings/user/RegisterEndpointRequest";
 import { UpdateEndpointRequest } from "@/bindings/user/UpdateEndpointRequest";
 import { LoginEndpointRequest } from "@/bindings/user/LoginEndpointRequest";
-import { RefreshtokenEndpointRequest } from "@/bindings/user/RefreshtokenEndpointRequest";
 import { AddRolePermissionRequest } from "@/bindings/user/AddRolePermissionRequest";
 import { AuthorizeRevokeUserRoleRequest } from "@/bindings/user/AuthorizeRevokeUserRoleRequest";
 import { AuthorizeRevokeRolePermissionRequest } from "@/bindings/user/AuthorizeRevokeRolePermissionRequest";
@@ -13,44 +12,37 @@ import { ObtainTokenResponse } from "@/bindings/user/ObtainTokenResponse";
 import { StatusMessageResponse } from "@/bindings/StatusMessageResponse";
 import { RolesListResponse } from "@/bindings/user/RolesListResponse";
 import { PermissionsListResponse } from "@/bindings/user/PermissionsListResponse";
+import { initializeAxiosClient } from ".";
+
+const axiosClient = initializeAxiosClient();
 
 class UserService {
   async getCurrentUser() {
-    const res = await axios.get<UserEndpointResponse>(userEndpoint());
+    const res = await axiosClient.get<UserEndpointResponse>(userEndpoint());
     return res;
   }
 
   async registerUser(data: RegisterEndpointRequest) {
-    const res = await axios.post<RegisterUserEndpointResponse>(userEndpoint(), {
-      method: "POST",
-      body: JSON.stringify(data)
-    });
+    const res = await axios.post<RegisterUserEndpointResponse>(userEndpoint(), data);
     return res;
   }
 
   async updateUser(data: UpdateEndpointRequest) {
-    const res = await axios.post<UserEndpointResponse>(userEndpoint(), {
-      method: "PUT",
-      body: JSON.stringify(data)
-    });
+    const res = await axiosClient.put<UserEndpointResponse>(userEndpoint(), data);
     return res;
   }
 
   async login(data: LoginEndpointRequest) {
-    const res = await axios.post<ObtainTokenResponse>(loginEndpoint(), {
-      method: "POST",
-      body: JSON.stringify(data)
-    });
+    const res = await axios.post<ObtainTokenResponse>(loginEndpoint(), data);
+    localStorage.setItem("refreshToken", res.data.refresh_token);
+    localStorage.setItem("bearerToken", res.data.bearer_token);
+    axiosClient.interceptors.request.use((config) => {
+      config.headers["authorization"] = `Bearer ${res.data.bearer_token}`;
+      return config;
+    })
     return res;
   }
 
-  async refreshToken(data: RefreshtokenEndpointRequest) {
-    const res = await axios.post<ObtainTokenResponse>(refreshEndpoint(), {
-      method: "POST",
-      body: JSON.stringify(data)
-    });
-    return res;
-  }
 
   async verifyRegistration(token: string) {
     const res = await axios.get<UserEndpointResponse>(verifyEndpoint(token));
@@ -58,74 +50,52 @@ class UserService {
   }
 
   async getRoles() {
-    const res = await axios.get<RolesListResponse>(rolesEndpoint());
+    const res = await axiosClient.get<RolesListResponse>(rolesEndpoint());
     return res;
   }
 
   async addRole(data: AddRolePermissionRequest) {
-    const res = await axios.post<StatusMessageResponse>(rolesEndpoint(), {
-      method: "POST",
-      body: JSON.stringify(data)
-    });
+    const res = await axiosClient.post<StatusMessageResponse>(rolesEndpoint(), data);
     return res;
   }
 
   async deleteRole(roleName: string) {
-    const res = await axios.delete<StatusMessageResponse>(roleEndpoint(roleName), {
-      method: "DELETE"
-    });
+    const res = await axiosClient.delete<StatusMessageResponse>(roleEndpoint(roleName));
     return res;
   }
 
   async getPermissions() {
-    const res = await axios.get<PermissionsListResponse>(permissionsEndpoint());
+    const res = await axiosClient.get<PermissionsListResponse>(permissionsEndpoint());
     return res;
   }
 
   async addPermission(data: AddRolePermissionRequest) {
-    const res = await axios.post<StatusMessageResponse>(permissionsEndpoint(), {
-      method: "POST",
-      body: JSON.stringify(data)
-    });
+    const res = await axiosClient.post<StatusMessageResponse>(permissionsEndpoint(), data);
     return res;
   }
 
   async deletePermission(permissionName: string) {
-    const res = await axios.delete<StatusMessageResponse>(permissionEndpoint(permissionName), {
-      method: "DELETE"
-    });
+    const res = await axiosClient.delete<StatusMessageResponse>(permissionEndpoint(permissionName));
     return res;
   }
 
   async authorizeUser(userId: string, data: AuthorizeRevokeUserRoleRequest) {
-    const res = await axios.post<StatusMessageResponse>(authorizeUserEndpoint(userId), {
-      method: "POST",
-      body: JSON.stringify(data)
-    });
+    const res = await axiosClient.post<StatusMessageResponse>(authorizeUserEndpoint(userId), data);
     return res;
   }
 
   async revokeUser(userId: string, data: AuthorizeRevokeUserRoleRequest) {
-    const res = await axios.post<StatusMessageResponse>(revokeUserEndpoint(userId), {
-      method: "POST",
-      body: JSON.stringify(data)
-    });
+    const res = await axiosClient.post<StatusMessageResponse>(revokeUserEndpoint(userId), data);
     return res;
   }
 
   async authorizeRole(roleName: string, data: AuthorizeRevokeRolePermissionRequest) {
-    const res = await axios.post<StatusMessageResponse>(authorizeRoleEndpoint(roleName), {
-      method: "POST",
-      body: JSON.stringify(data)
-    });
+    const res = await axiosClient.post<StatusMessageResponse>(authorizeRoleEndpoint(roleName), data);
     return res;
   }
 
   async revokeRole(roleName: string, data: AuthorizeRevokeRolePermissionRequest) {
-    const res = await axios.post<StatusMessageResponse>(revokeRoleEndpoint(roleName), {
-      method: "POST",
-      body: JSON.stringify(data)
-    });
+    const res = await axiosClient.post<StatusMessageResponse>(revokeRoleEndpoint(roleName), data);
     return res;
   }
 }

@@ -6,24 +6,29 @@ import { SendNotificationEndpointRequest } from "@/bindings/notification/SendNot
 import { NotificationEndpointResponse } from "@/bindings/notification/NotificationEndpointResponse";
 import { NotificationLogsEndpointResponse } from "@/bindings/notification/NotificationLogsEndpointResponse";
 import { AddGroupEndpointRequest } from "@/bindings/notification/AddGroupEndpointRequest";
+import { initializeAxiosClient } from ".";
+
+const axiosClient = initializeAxiosClient();
 
 class NotificationService {
-  async sendNotification(data: SendNotificationEndpointRequest) {
+  async sendNotification(data: SendNotificationEndpointRequest, token: string) {
     const res = await axios.post<NotificationEndpointResponse>(getNotificationsEndpoint(""), {
       method: "POST",
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
       body: JSON.stringify(data)
     });
     return res;
   }
 
   getNotifications(context: QueryFunctionContext) {
-    // TODO - recheck this
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+    const token = localStorage.getItem("bearerToken") || "invalidToken";
     const { queryKey } = context;
     return new Promise((resolve, reject) => {
       const [_key] = queryKey;
       const queryClient = new QueryClient();
-      let eventSource = new EventSourcePolyfill(getNotificationsEndpoint(token), {
+      let eventSource = new EventSourcePolyfill(getNotificationsEndpoint(encodeURI(token)), {
         withCredentials: true,
         heartbeatTimeout: 60000, //Timeout
       });
@@ -47,22 +52,22 @@ class NotificationService {
   }
 
   async getNotificationLogs() {
-    const res = axios.get<NotificationLogsEndpointResponse>(listNotificationEndpoint());
+    const res = await axiosClient.get<NotificationLogsEndpointResponse>(listNotificationEndpoint());
     return res;
   }
 
   async subscribeToGroup(groupName: string) {
-    const res = await axios.get<NotificationEndpointResponse>(subscribeNotificationEndpoint(groupName));
+    const res = await axiosClient.get<NotificationEndpointResponse>(subscribeNotificationEndpoint(groupName));
     return res;
   }
 
   async unsubscribeFromGroup(groupName: string) {
-    const res = await axios.delete<NotificationEndpointResponse>(subscribeNotificationEndpoint(groupName));
+    const res = await axiosClient.delete<NotificationEndpointResponse>(subscribeNotificationEndpoint(groupName));
     return res;
   }
 
   async addGroup(data: AddGroupEndpointRequest) {
-    const res = await axios.post<NotificationEndpointResponse>(addNotificationGroupEndpoint(), {
+    const res = await axiosClient.post<NotificationEndpointResponse>(addNotificationGroupEndpoint(), {
       method: "POST",
       body: JSON.stringify(data)
     });
@@ -70,7 +75,7 @@ class NotificationService {
   }
 
   async removeGroup(groupName: string, adminEmail: string) {
-    const res = await axios.delete<NotificationEndpointResponse>(removeNotificationGroupEndpoint(groupName, adminEmail));
+    const res = await axiosClient.delete<NotificationEndpointResponse>(removeNotificationGroupEndpoint(groupName, adminEmail));
     return res;
   }
 }

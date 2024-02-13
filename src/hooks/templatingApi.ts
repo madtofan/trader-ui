@@ -1,26 +1,29 @@
 import templatingService from "@/services/templatingService";
 import { useMutation, useQuery } from "react-query";
 import { AddTemplateEndpointRequest } from "@/bindings/templating/AddTemplateEndpointRequest";
+import { MutationOptions } from ".";
 
 const useGetTemplateList = () => {
   return useQuery(["getTemplateList"], () => { return templatingService.getTemplateList(); });
 }
 
-const useAddTemplate = (data: AddTemplateEndpointRequest, options?: any) => {
+const useAddTemplate = (options?: MutationOptions) => {
   return useMutation(
-    () => {
-      return templatingService.addTemplate(data);
-    },
-    ...options,
+    {
+      mutationKey: ["addTemplate"],
+      mutationFn: (data: AddTemplateEndpointRequest) => templatingService.addTemplate(data),
+      ...options,
+    }
   )
 }
 
-const useRemoveTemplate = (templateName: string, options?: any) => {
+const useRemoveTemplate = (options?: MutationOptions) => {
   return useMutation(
-    () => {
-      return templatingService.removeTemplate(templateName);
-    },
-    ...options,
+    {
+      mutationKey: ["removeTemplate"],
+      mutationFn: ({ templateName }: { templateName: string }) => templatingService.removeTemplate(templateName),
+      ...options,
+    }
   )
 }
 

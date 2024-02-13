@@ -1,5 +1,5 @@
 function Dashboard() {
-  return (<main className="flex-1">test</main>)
+  return (<main className="container flex-1 py-8">dashboard page</main>)
 }
 
 export default Dashboard;

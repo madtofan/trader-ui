@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { navsConfig } from '@/config/navs';
 import { useCurrentUser } from '@/hooks/userApi';
 import Icons from '@/components/icons';
-import { useGetNotifications } from '@/hooks/notificationApi';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   NavigationMenu,
@@ -28,11 +27,12 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const { data: currentUser, isLoading } = useCurrentUser();
-  const { data: notifications } = useGetNotifications();
+  // TODO - fix Cors on the BE
+  // const { data: notifications } = useGetNotifications();
 
-  useEffect(() => {
-    console.log(notifications);
-  }, [notifications]);
+  // useEffect(() => {
+  //   console.log(notifications);
+  // }, [notifications]);
   return (
     <MainLayout>
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -56,13 +56,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                       {currentUser?.data.first_name}
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <Link to="/logout">
-                        <NavigationMenuLink
-                          className={navigationMenuTriggerStyle()}
-                        >
-                          Logout
-                        </NavigationMenuLink>
-                      </Link>
+                      <NavigationMenuLink
+                        className={navigationMenuTriggerStyle()}
+                      >
+                        <Link to="logout">Logout</Link>
+                      </NavigationMenuLink>
                     </NavigationMenuContent>
                   </NavigationMenuItem>
                 </NavigationMenuList>

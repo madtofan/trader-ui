@@ -14,6 +14,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import { registerIb, registerStore } from './ib';
 
 class AppUpdater {
   constructor() {
@@ -82,6 +83,8 @@ const createWindow = async () => {
   });
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
+  registerStore(mainWindow);
+  registerIb(mainWindow);
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {

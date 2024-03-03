@@ -1,13 +1,11 @@
-## Install Node and Yarn
+## Install Node
 Node can be downloaded and installed from the link `https://nodejs.org/en/download`
-
-Once node is installed, install Yarn by running the command `npm install --global yarn`
 
 ## Install project dependencies
 Run the following command to install the project dependencies:
 
 ```bash
-yarn install
+npm install
 ```
 
 ## Getting Started
@@ -15,7 +13,7 @@ yarn install
 First, run the development server:
 
 ```bash
-yarn start
+npm start
 ```
 
 The development window will appear.

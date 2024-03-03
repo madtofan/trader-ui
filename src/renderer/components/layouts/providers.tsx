@@ -4,15 +4,19 @@ import {
   ReactElement,
   createContext,
   useCallback,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { useTheme } from '@/lib/theme';
+import { STORE_CHANNELS, ElectronContextType } from '@/../shared-types';
 
 interface ProvidersProps {
   children: ReactElement;
 }
+
+export const ElectronContext = createContext<ElectronContextType>({});
 
 export const ThemeContext = createContext([
   'system',
@@ -24,6 +28,13 @@ export default function Providers({ children }: ProvidersProps): ReactElement {
   const queryClient = new QueryClient();
   const themeChanger = useTheme();
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'system');
+  const [electronContext, setElectronContext] = useState({});
+
+  useEffect(() => {
+    window.electron.ipcRenderer.on(STORE_CHANNELS.Update, (arg) => {
+      setElectronContext(arg);
+    });
+  }, []);
 
   const setThemeCallback = useCallback(
     (themeName: string) => {
@@ -40,9 +51,11 @@ export default function Providers({ children }: ProvidersProps): ReactElement {
 
   return (
     <QueryClientProvider client={queryClient} contextSharing>
-      <ThemeContext.Provider value={providerValue}>
-        <TooltipProvider>{children}</TooltipProvider>
-      </ThemeContext.Provider>
+      <ElectronContext.Provider value={electronContext}>
+        <ThemeContext.Provider value={providerValue}>
+          <TooltipProvider>{children}</TooltipProvider>
+        </ThemeContext.Provider>
+      </ElectronContext.Provider>
       {process.env.NODE_ENV !== 'production' && (
         <ReactQueryDevtools initialIsOpen={false} />
       )}

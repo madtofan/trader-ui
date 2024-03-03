@@ -19,7 +19,10 @@ export default function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/dashboard/config" element={<ConfigPage />} />
-          <Route path="/dashboard/config/templates" element={<TemplatesPage />} />
+          <Route
+            path="/dashboard/config/templates"
+            element={<TemplatesPage />}
+          />
           <Route path="/dashboard/docs" element={<DocumentationsPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/register/pending" element={<PendingPage />} />

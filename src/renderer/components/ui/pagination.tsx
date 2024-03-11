@@ -7,6 +7,7 @@ import {
 
 import { cn } from '@/lib/utils';
 import { ButtonProps, buttonVariants } from '@/components/ui/button';
+import { SetURLSearchParams } from 'react-router-dom';
 
 function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
   return (
@@ -121,6 +122,74 @@ function PaginationEllipsis({
 }
 PaginationEllipsis.displayName = 'PaginationEllipsis';
 
+function TablePagination(
+  rowCount: number,
+  currentPage: number,
+  setSearchParams: SetURLSearchParams,
+): React.ReactElement {
+  const pagesCount = Math.floor(rowCount / 10);
+  const onClickPage = (pageNumber: number) => {
+    setSearchParams({ page: pageNumber.toString() });
+  };
+  return (
+    <Pagination>
+      <PaginationContent>
+        {currentPage > 1 && (
+          <PaginationItem>
+            <PaginationPrevious
+              href="#"
+              onClick={() => onClickPage(currentPage - 1)}
+            />
+          </PaginationItem>
+        )}
+        {currentPage - 2 > 1 && (
+          <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem>
+        )}
+        {currentPage > 1 && (
+          <PaginationItem>
+            <PaginationLink
+              href="#"
+              onClick={() => onClickPage(currentPage - 1)}
+            >
+              {currentPage - 1}
+            </PaginationLink>
+          </PaginationItem>
+        )}
+        <PaginationItem>
+          <PaginationLink href="#" isActive>
+            {currentPage}
+          </PaginationLink>
+        </PaginationItem>
+        {currentPage < pagesCount && (
+          <PaginationItem>
+            <PaginationLink
+              href="#"
+              onClick={() => onClickPage(currentPage + 1)}
+            >
+              {currentPage + 1}
+            </PaginationLink>
+          </PaginationItem>
+        )}
+        {currentPage + 1 < pagesCount && (
+          <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem>
+        )}
+        {currentPage < pagesCount && (
+          <PaginationItem>
+            <PaginationNext
+              href="#"
+              onClick={() => onClickPage(currentPage + 1)}
+            />
+          </PaginationItem>
+        )}
+      </PaginationContent>
+    </Pagination>
+  );
+}
+
 export {
   Pagination,
   PaginationContent,
@@ -129,4 +198,5 @@ export {
   PaginationPrevious,
   PaginationNext,
   PaginationEllipsis,
+  TablePagination,
 };

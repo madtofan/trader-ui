@@ -4,7 +4,10 @@ import { API_SERVER, refreshEndpoint } from '@/config/api';
 import axios from 'axios';
 
 const refreshToken = async () => {
-  const token = localStorage.getItem('refreshToken') || 'invalidToken';
+  const token = localStorage.getItem('refreshToken');
+  if (!token) {
+    return false;
+  }
   const data: RefreshtokenEndpointRequest = {
     token,
   };
@@ -23,17 +26,26 @@ export const initializeAxiosClient = () => {
     baseURL: API_SERVER,
   });
 
+  axiosClient.interceptors.request.use((config) => {
+    const bearerToken = localStorage.getItem('bearerToken');
+    config.headers.authorization = bearerToken ? `Bearer ${bearerToken}` : '';
+
+    return config;
+  });
+
   axiosClient.interceptors.response.use(
     (response) => response,
     async (error) => {
-      if (
-        error.response &&
-        (error.response.status === 400 || error.response.status === 403)
-      ) {
+      if (error.code === 'ERR_NETWORK') {
+        localStorage.setItem('bearerToken', '');
+        localStorage.setItem('refreshToken', '');
+        window.location.href = '/';
+      }
+      if (error.response && error.response.status === 401) {
         const isRefreshed = await refreshToken();
         if (isRefreshed) {
           const bearerToken = localStorage.getItem('bearerToken');
-          error.config.headers.authorization = `Bearer ${bearerToken}`;
+          error.config.headers.Authorization = `Bearer ${bearerToken}`;
           return axiosClient(error.config);
         }
         localStorage.setItem('bearerToken', '');

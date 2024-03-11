@@ -59,7 +59,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                       <NavigationMenuLink
                         className={navigationMenuTriggerStyle()}
                       >
-                        <Link to="logout">Logout</Link>
+                        <Link to="/logout">Logout</Link>
                       </NavigationMenuLink>
                     </NavigationMenuContent>
                   </NavigationMenuItem>

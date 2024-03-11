@@ -27,7 +27,7 @@ export const removeTemplatingEndpoint = (templateName: string) =>
 export const sendNotificationEndpoint = () => `${API_SERVER}/notification`;
 export const getNotificationsEndpoint = (bearerToken: string) =>
   `${API_SERVER}/notification/${bearerToken}`;
-export const listNotificationEndpoint = () => `${API_SERVER}/notification/log`;
+export const listNotificationEndpoint = (page: number) => `${API_SERVER}/notification/log?page=${page}`;
 export const subscribeNotificationEndpoint = (groupName: string) =>
   `${API_SERVER}/notification/subscribe/${groupName}`;
 export const addNotificationGroupEndpoint = () =>

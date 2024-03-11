@@ -16,7 +16,7 @@ export default function PendingPage() {
         <div className="flex items-center justify-between">
           <p className="text-sm text-gray-500">
             Return to
-            <Link className="underline pl-1" to="/login">
+            <Link className="underline pl-1" to="/">
               login page.
             </Link>
           </p>

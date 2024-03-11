@@ -18,23 +18,23 @@ export type ElectronContextType = {
   portfolio?: Portfolio;
 };
 
-export const CONTEXT_KEYS = {
-  connection: 'connection',
-  connectionHost: 'connection.host',
-  connectionPort: 'connection.port',
-  connectionConnected: 'connection.connected',
-  portfolio: 'portfolio',
-  portfolioPosition: 'portfolio.positions',
-} as const;
+export enum CONTEXT_KEYS {
+  connection = 'connection',
+  connectionHost = 'connection.host',
+  connectionPort = 'connection.port',
+  connectionConnected = 'connection.connected',
+  portfolio = 'portfolio',
+  portfolioPosition = 'portfolio.positions',
+}
 
-export const IB_CHANNELS = {
-  Connect: 'connect-ib',
-  Disconnect: 'disconnect-ib',
-  GetPositions: 'get-positions-ib',
-} as const;
+export enum IB_CHANNELS {
+  Connect = 'connect-ib',
+  Disconnect = 'disconnect-ib',
+  GetPositions = 'get-positions-ib',
+}
 
-export const STORE_CHANNELS = {
-  Get: 'electron-store-get',
-  Set: 'electron-store-set',
-  Update: 'electron-store-update',
-} as const;
+export enum STORE_CHANNELS {
+  Get = 'electron-store-get',
+  Set = 'electron-store-set',
+  Update = 'electron-store-update',
+}

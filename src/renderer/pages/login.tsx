@@ -8,6 +8,7 @@ import FormInput from '@/components/ui/form-input';
 import MainLayout from '@/components/layouts/main-layout';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useToast } from '@/components/ui/use-toast';
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -19,9 +20,21 @@ const formSchema = z.object({
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const { mutate: login } = useLogin({
     onSuccess: () => {
       navigate('/dashboard');
+    },
+    onError: (err: any) => {
+      let errorMessage = err.message;
+      if (err.response?.status === 401) {
+        errorMessage = 'Invalid email or password';
+      }
+      toast({
+        title: 'Login Failed',
+        description: errorMessage || 'Something went wrong',
+        variant: 'destructive',
+      });
     },
   });
 

@@ -14,7 +14,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import { registerIb, registerStore } from './ib';
+import { registerIb, registerStore } from './handler';
 
 class AppUpdater {
   constructor() {

@@ -9,6 +9,7 @@ import {
   useState,
 } from 'react';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { Toaster } from '@/components/ui/toaster';
 import { useTheme } from '@/lib/theme';
 import { STORE_CHANNELS, ElectronContextType } from '@/../shared-types';
 
@@ -21,7 +22,7 @@ export const ElectronContext = createContext<ElectronContextType>({});
 export const ThemeContext = createContext([
   'system',
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  (themeName: string) => {},
+  (themeName: string) => { },
 ]);
 
 export default function Providers({ children }: ProvidersProps): ReactElement {
@@ -32,7 +33,7 @@ export default function Providers({ children }: ProvidersProps): ReactElement {
 
   useEffect(() => {
     window.electron.ipcRenderer.on(STORE_CHANNELS.Update, (arg) => {
-      setElectronContext(arg);
+      setElectronContext(arg as ElectronContextType);
     });
   }, []);
 
@@ -56,6 +57,7 @@ export default function Providers({ children }: ProvidersProps): ReactElement {
           <TooltipProvider>{children}</TooltipProvider>
         </ThemeContext.Provider>
       </ElectronContext.Provider>
+      <Toaster />
       {process.env.NODE_ENV !== 'production' && (
         <ReactQueryDevtools initialIsOpen={false} />
       )}

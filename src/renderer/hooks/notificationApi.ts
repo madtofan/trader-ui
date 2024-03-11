@@ -6,7 +6,7 @@ import { MutationOptions } from '.';
 
 const useSendNotification = (token: string, options?: MutationOptions) => {
   return useMutation({
-    mutationKey: [['sendNotifcation']],
+    mutationKey: ['sendNotifcation'],
     mutationFn: (data: SendNotificationEndpointRequest) =>
       notificationService.sendNotification(data, token),
     ...options,
@@ -15,22 +15,22 @@ const useSendNotification = (token: string, options?: MutationOptions) => {
 
 const useGetNotifications = () => {
   return useQuery({
-    queryKey: [['getNotifications']],
+    queryKey: ['getNotifications'],
     queryFn: notificationService.getNotifications,
     retry: 0,
   });
 };
 
-const useGetNotificationLogs = () => {
+const useGetNotificationLogs = (page: number) => {
   return useQuery({
-    queryKey: [['getNotificationLogs']],
+    queryKey: ['getNotificationLogs', page],
     queryFn: notificationService.getNotificationLogs,
   });
 };
 
 const useSubscribeToGroup = (options?: MutationOptions) => {
   return useMutation({
-    mutationKey: [['subscribeToGroup']],
+    mutationKey: ['subscribeToGroup'],
     mutationFn: ({ groupName }: { groupName: string }) =>
       notificationService.subscribeToGroup(groupName),
     ...options,
@@ -39,7 +39,7 @@ const useSubscribeToGroup = (options?: MutationOptions) => {
 
 const useUnsubscribeFromGroup = (options?: MutationOptions) => {
   return useMutation({
-    mutationKey: [['unsubscribeFromGroup']],
+    mutationKey: ['unsubscribeFromGroup'],
     mutationFn: ({ groupName }: { groupName: string }) =>
       notificationService.unsubscribeFromGroup(groupName),
     ...options,
@@ -48,7 +48,7 @@ const useUnsubscribeFromGroup = (options?: MutationOptions) => {
 
 const useAddNotificationGroup = (options?: MutationOptions) => {
   return useMutation({
-    mutationKey: [['addNotificationGroup']],
+    mutationKey: ['addNotificationGroup'],
     mutationFn: (data: AddGroupEndpointRequest) =>
       notificationService.addGroup(data),
     ...options,

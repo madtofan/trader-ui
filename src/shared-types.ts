@@ -7,15 +7,76 @@ export type IBConnection = {
 export type Position = {
   symbol: string;
   avgCost: number;
+  count: number;
 };
 
-export type Portfolio = {
+export class AccountSummaryClass {
+  Currency = '';
+
+  CashBalance = '';
+
+  TotalCashBalance = '';
+
+  AccruedCash = '';
+
+  StockMarketValue = '';
+
+  OptionMarketValue = '';
+
+  FutureOptionValue = '';
+
+  FuturesPNL = '';
+
+  NetLiquidationByCurrency = '';
+
+  UnrealizedPnL = '';
+
+  RealizedPnL = '';
+
+  ExchangeRate = '';
+
+  FundValue = '';
+
+  NetDividend = '';
+
+  MutualFundValue = '';
+
+  MoneyMarketFundValue = '';
+
+  CorporateBondValue = '';
+
+  TBondValue = '';
+
+  TBillValue = '';
+
+  WarrantValue = '';
+
+  FxCashBalance = '';
+
+  AccountOrGroup = '';
+
+  RealCurrency = '';
+
+  IssuerOptionValue = '';
+
+  Cryptocurrency = '';
+}
+
+export interface AccountSummary extends AccountSummaryClass { }
+
+export type Account = {
   positions?: Position[];
+  summary?: AccountSummary;
+};
+
+export type Config = {
+  accountSummaryKeys?: Array<keyof AccountSummary>;
 };
 
 export type ElectronContextType = {
   connection?: IBConnection;
-  portfolio?: Portfolio;
+  account?: Account;
+  config?: Config;
 };
 
 export enum CONTEXT_KEYS {
@@ -23,14 +84,20 @@ export enum CONTEXT_KEYS {
   connectionHost = 'connection.host',
   connectionPort = 'connection.port',
   connectionConnected = 'connection.connected',
-  portfolio = 'portfolio',
-  portfolioPosition = 'portfolio.positions',
+  account = 'account',
+  accountPositions = 'account.positions',
+  accountSummary = 'account.summary',
+  config = 'config',
+  configAccountSummaryKeys = 'config.accountSummaryKeys',
 }
 
 export enum IB_CHANNELS {
   Connect = 'connect-ib',
   Disconnect = 'disconnect-ib',
   GetPositions = 'get-positions-ib',
+  GetOpenOrders = 'get-open-orders-ib',
+  GetManagedAccounts = 'get-managed-accounts-ib',
+  GetAccountSummary = 'get-account-summary-ib',
 }
 
 export enum STORE_CHANNELS {

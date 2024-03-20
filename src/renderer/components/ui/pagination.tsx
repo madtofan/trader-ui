@@ -122,11 +122,15 @@ function PaginationEllipsis({
 }
 PaginationEllipsis.displayName = 'PaginationEllipsis';
 
-function TablePagination(
-  rowCount: number,
-  currentPage: number,
-  setSearchParams: SetURLSearchParams,
-): React.ReactElement {
+function TablePagination({
+  rowCount,
+  currentPage,
+  setSearchParams,
+}: {
+  rowCount: number;
+  currentPage: number;
+  setSearchParams: SetURLSearchParams;
+}): React.ReactElement {
   const pagesCount = Math.floor(rowCount / 10);
   const onClickPage = (pageNumber: number) => {
     setSearchParams({ page: pageNumber.toString() });

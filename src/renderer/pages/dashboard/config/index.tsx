@@ -44,11 +44,13 @@ export default function ConfigPage() {
     <DashboardLayout>
       <main className="container flex-1 py-8">
         <DataTable columns={columns} data={data?.data.notifications || []} />
-        <TablePagination
-          rowCount={Number(data?.data.count || 0n) || 0}
-          currentPage={currentPage}
-          setSearchParams={setSearchParams}
-        />
+        <div className="mt-4 flex justify-between items-center">
+          <TablePagination
+            rowCount={Number(data?.data.count)}
+            currentPage={currentPage}
+            setSearchParams={setSearchParams}
+          />
+        </div>
       </main>
     </DashboardLayout>
   );

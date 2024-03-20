@@ -1,8 +1,16 @@
 import { BrowserWindow, ipcMain } from 'electron';
 import Store from 'electron-store';
-import { connectIb, disconnectIb, getPositions } from './ib';
+import IBApi from '@stoqey/ib';
+import {
+  connectIb,
+  disconnectIb,
+  getAccountSummary,
+  getManagedAccounts,
+  getOpenOrders,
+  getPositions,
+} from './ib';
 import { getStoreValues } from './store';
-import { IB_CHANNELS, STORE_CHANNELS } from '../../shared-types.ts';
+import { IB_CHANNELS, STORE_CHANNELS } from '../../shared-types';
 
 const store = new Store();
 
@@ -18,15 +26,32 @@ export const registerStore = (mainWindow: BrowserWindow) => {
 };
 
 export const registerIb = (mainWindow: BrowserWindow) => {
+  let ib: IBApi;
+  const setIb = (newIb: IBApi) => {
+    ib = newIb;
+  };
+
   ipcMain.handle(IB_CHANNELS.Connect, async () => {
-    return connectIb(store, mainWindow);
+    return connectIb(store, mainWindow, setIb);
   });
 
   ipcMain.handle(IB_CHANNELS.Disconnect, async () => {
-    return disconnectIb(store, mainWindow);
+    return disconnectIb(store, mainWindow, ib);
   });
 
   ipcMain.handle(IB_CHANNELS.GetPositions, async () => {
-    return getPositions(store, mainWindow);
+    return getPositions(store, mainWindow, ib);
+  });
+
+  ipcMain.handle(IB_CHANNELS.GetOpenOrders, async () => {
+    return getOpenOrders(store, mainWindow, ib);
+  });
+
+  ipcMain.handle(IB_CHANNELS.GetManagedAccounts, async () => {
+    return getManagedAccounts(store, mainWindow, ib);
+  });
+
+  ipcMain.handle(IB_CHANNELS.GetAccountSummary, async () => {
+    return getAccountSummary(store, mainWindow, ib);
   });
 };

@@ -7,6 +7,9 @@ export type Channels =
   | IB_CHANNELS.Connect
   | IB_CHANNELS.Disconnect
   | IB_CHANNELS.GetPositions
+  | IB_CHANNELS.GetOpenOrders
+  | IB_CHANNELS.GetManagedAccounts
+  | IB_CHANNELS.GetAccountSummary
   | STORE_CHANNELS.Get
   | STORE_CHANNELS.Set
   | STORE_CHANNELS.Update;

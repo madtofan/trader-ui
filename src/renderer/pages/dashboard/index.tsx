@@ -26,6 +26,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { cn } from '@/lib/utils';
 
 function AccountContent({
   account,
@@ -139,12 +140,19 @@ function DashboardPage() {
 
   return (
     <DashboardLayout>
-      <main className="container flex-1 py-8">
-        {connection?.connected ? (
-          <AccountContent account={account} config={config} />
-        ) : (
-          <div>Interactive Broker Client is not connected</div>
-        )}
+      <main className="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+        <div className="mx-auto w-full min-w-0">
+          <div className="space-y-2">
+            <h1 className={cn('scroll-m-20 text-4xl font-bold tracking-tight')}>
+              Dashboard
+            </h1>
+          </div>
+          {connection?.connected ? (
+            <AccountContent account={account} config={config} />
+          ) : (
+            <div>Interactive Broker Client is not connected</div>
+          )}
+        </div>
       </main>
     </DashboardLayout>
   );

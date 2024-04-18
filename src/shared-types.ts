@@ -77,6 +77,7 @@ export type ElectronContextType = {
   connection?: IBConnection;
   account?: Account;
   config?: Config;
+  loggedIn?: boolean;
 };
 
 export enum CONTEXT_KEYS {
@@ -89,6 +90,7 @@ export enum CONTEXT_KEYS {
   accountSummary = 'account.summary',
   config = 'config',
   configAccountSummaryKeys = 'config.accountSummaryKeys',
+  loggedIn = 'loggedIn',
 }
 
 export enum IB_CHANNELS {

@@ -3,6 +3,7 @@ import DashboardLayout from '@/components/layouts/dashboard';
 import { DataTable } from '@/components/ui/data-table';
 import { TablePagination } from '@/components/ui/pagination';
 import { useGetTemplateList } from '@/hooks/templatingApi';
+import { cn } from '@/lib/utils';
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -34,14 +35,21 @@ export default function TemplatesPage() {
 
   return (
     <DashboardLayout>
-      <main className="container flex-1 py-8">
-        <DataTable columns={columns} data={data?.data.templates || []} />
-        <div className="mt-4 flex justify-between items-center">
-          <TablePagination
-            rowCount={0}
-            currentPage={currentPage}
-            setSearchParams={setSearchParams}
-          />
+      <main className="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+        <div className="mx-auto w-full min-w-0">
+          <div className="space-y-2">
+            <h1 className={cn('scroll-m-20 text-4xl font-bold tracking-tight')}>
+              Templates
+            </h1>
+          </div>
+          <DataTable columns={columns} data={data?.data.templates || []} />
+          <div className="mt-4 flex justify-between items-center">
+            <TablePagination
+              rowCount={0}
+              currentPage={currentPage}
+              setSearchParams={setSearchParams}
+            />
+          </div>
         </div>
       </main>
     </DashboardLayout>

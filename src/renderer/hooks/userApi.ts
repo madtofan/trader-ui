@@ -45,9 +45,17 @@ const useVerifyRegistration = (token: string) => {
   });
 };
 
-const useGetRoles = () => {
-  return useQuery(['getRoles'], () => {
-    return userService.getRoles();
+const useGetUsers = (page: number) => {
+  return useQuery({
+    queryKey: ['getUsers', page],
+    queryFn: userService.getUsers,
+  });
+};
+
+const useGetRoles = (page: number) => {
+  return useQuery({
+    queryKey: ['getRoles', page],
+    queryFn: userService.getRoles,
   });
 };
 
@@ -71,9 +79,10 @@ const useDeleteRole = (options?: MutationOptions) => {
   });
 };
 
-const useGetPermissions = () => {
-  return useQuery(['getPermissions'], () => {
-    return userService.getPermissions();
+const useGetPermissions = (page: number) => {
+  return useQuery({
+    queryKey: ['getPermissions', page],
+    queryFn: userService.getPermissions,
   });
 };
 
@@ -151,6 +160,7 @@ export {
   useUpdateUser,
   useLogin,
   useVerifyRegistration,
+  useGetUsers,
   useGetRoles,
   useAddRole,
   useDeleteRole,

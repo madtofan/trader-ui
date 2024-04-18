@@ -89,7 +89,7 @@ function ConnectForm({ ibConnection }: { ibConnection?: IBConnection }) {
 
 export default function SiteFooter() {
   const context = useContext(ElectronContext);
-  const { connection } = context;
+  const { connection, loggedIn } = context;
 
   return (
     <footer className="border-t md:px-8 md:py-0 ">
@@ -101,7 +101,7 @@ export default function SiteFooter() {
           Built by {` ${siteConfig.author}`}. To execute the trade when
           notification occured.
         </Link>
-        <ConnectForm ibConnection={connection} />
+        {loggedIn && <ConnectForm ibConnection={connection} />}
       </div>
     </footer>
   );

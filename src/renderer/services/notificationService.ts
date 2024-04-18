@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
 import axios from 'axios';
 import { QueryClient, QueryFunctionContext } from 'react-query';
@@ -65,10 +66,9 @@ class NotificationService {
   async getNotificationLogs({
     queryKey,
   }: QueryFunctionContext<[string, number | null | undefined]>) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, page] = queryKey;
     const res = await axiosClient.get<NotificationLogsEndpointResponse>(
-      listNotificationEndpoint(page ?? 0),
+      `${listNotificationEndpoint()}?page=${page ?? 0}`,
     );
     return res;
   }

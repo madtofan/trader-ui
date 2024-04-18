@@ -222,7 +222,6 @@ export const getAccountSummary = async (
       accountSummary[key] = value;
     })
     .once(EventName.accountSummaryEnd, () => {
-      ib.cancelAccountSummary(1);
       store.set(CONTEXT_KEYS.accountSummary, accountSummary);
       mainWindow.webContents.send(STORE_CHANNELS.Update, getStoreValues(store));
       resolves(accountSummary);

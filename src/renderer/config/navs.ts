@@ -44,6 +44,16 @@ export const navsConfig: NavsConfig = {
           href: '/dashboard/config/templates',
           items: [],
         },
+        {
+          title: 'Users',
+          href: '/dashboard/config/users',
+          items: [],
+        },
+        {
+          title: 'Roles and Permissions',
+          href: '/dashboard/config/roles-permissions',
+          items: [],
+        },
       ],
     },
     {

@@ -7,6 +7,7 @@ export const getStoreValues = (store: Store): ElectronContextType => {
     CONTEXT_KEYS.connection,
     CONTEXT_KEYS.account,
     CONTEXT_KEYS.config,
+    CONTEXT_KEYS.loggedIn,
   ];
   parentKeys.forEach((typeKey) => {
     electronContextType[typeKey as keyof ElectronContextType] = store.get(

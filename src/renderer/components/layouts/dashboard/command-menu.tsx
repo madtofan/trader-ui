@@ -90,6 +90,14 @@ export default function CommandMenu({ ...props }: DialogProps) {
                   {navItem.title}
                 </CommandItem>
               ))}
+            <CommandItem
+              value="Logout"
+              onSelect={() => {
+                runCommand(() => navigate('/logout'));
+              }}
+            >
+              Logout
+            </CommandItem>
           </CommandGroup>
           {navsConfig.sidebarNav.map((group) => (
             <CommandGroup key={group.title} heading={group.title}>

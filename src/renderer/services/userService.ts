@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
 import axios from 'axios';
 import {
   authorizeRoleEndpoint,
   authorizeUserEndpoint,
+  listUsersEndpoint,
   loginEndpoint,
   permissionEndpoint,
   permissionsEndpoint,
@@ -25,7 +27,10 @@ import { ObtainTokenResponse } from '@/bindings/user/ObtainTokenResponse';
 import { StatusMessageResponse } from '@/bindings/StatusMessageResponse';
 import { RolesListResponse } from '@/bindings/user/RolesListResponse';
 import { PermissionsListResponse } from '@/bindings/user/PermissionsListResponse';
+import { UserListEndpointResponse } from '@/bindings/user/UserListEndpointResponse';
+import { QueryFunctionContext } from 'react-query';
 import { initializeAxiosClient } from '.';
+import { CONTEXT_KEYS, STORE_CHANNELS } from '../../shared-types';
 
 const axiosClient = initializeAxiosClient();
 
@@ -36,7 +41,7 @@ class UserService {
   }
 
   async registerUser(data: RegisterEndpointRequest) {
-    const res = await axios.post<RegisterUserEndpointResponse>(
+    const res = await axiosClient.post<RegisterUserEndpointResponse>(
       userEndpoint(),
       data,
     );
@@ -55,6 +60,11 @@ class UserService {
     const res = await axios.post<ObtainTokenResponse>(loginEndpoint(), data);
     localStorage.setItem('refreshToken', res.data.refresh_token);
     localStorage.setItem('bearerToken', res.data.bearer_token);
+    window.electron.ipcRenderer.invoke(
+      STORE_CHANNELS.Set,
+      CONTEXT_KEYS.loggedIn,
+      true,
+    );
     axiosClient.interceptors.request.use((config) => {
       config.headers.authorization = `Bearer ${res.data.bearer_token}`;
       return config;
@@ -67,8 +77,23 @@ class UserService {
     return res;
   }
 
-  async getRoles() {
-    const res = await axiosClient.get<RolesListResponse>(rolesEndpoint());
+  async getUsers({
+    queryKey,
+  }: QueryFunctionContext<[string, number | null | undefined]>) {
+    const [_, page] = queryKey;
+    const res = await axios.get<UserListEndpointResponse>(
+      `${listUsersEndpoint()}?page=${page ?? 0}`,
+    );
+    return res;
+  }
+
+  async getRoles({
+    queryKey,
+  }: QueryFunctionContext<[string, number | null | undefined]>) {
+    const [_, page] = queryKey;
+    const res = await axiosClient.get<RolesListResponse>(
+      `${rolesEndpoint()}?page=${page ?? 0}`,
+    );
     return res;
   }
 
@@ -87,9 +112,12 @@ class UserService {
     return res;
   }
 
-  async getPermissions() {
+  async getPermissions({
+    queryKey,
+  }: QueryFunctionContext<[string, number | null | undefined]>) {
+    const [_, page] = queryKey;
     const res = await axiosClient.get<PermissionsListResponse>(
-      permissionsEndpoint(),
+      `${permissionsEndpoint()}?page=${page ?? 0}`,
     );
     return res;
   }

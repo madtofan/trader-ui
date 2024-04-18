@@ -19,6 +19,7 @@ export const authorizeRoleEndpoint = (roleName: string) =>
   `${API_SERVER}/user/authorize/role/${roleName}`;
 export const revokeRoleEndpoint = (roleName: string) =>
   `${API_SERVER}/user/revoke/role/${roleName}`;
+export const listUsersEndpoint = () => `${API_SERVER}/user/list`;
 
 export const templatingEndpoint = () => `${API_SERVER}/templating`;
 export const removeTemplatingEndpoint = (templateName: string) =>
@@ -27,7 +28,7 @@ export const removeTemplatingEndpoint = (templateName: string) =>
 export const sendNotificationEndpoint = () => `${API_SERVER}/notification`;
 export const getNotificationsEndpoint = (bearerToken: string) =>
   `${API_SERVER}/notification/${bearerToken}`;
-export const listNotificationEndpoint = (page: number) => `${API_SERVER}/notification/log?page=${page}`;
+export const listNotificationEndpoint = () => `${API_SERVER}/notification/log`;
 export const subscribeNotificationEndpoint = (groupName: string) =>
   `${API_SERVER}/notification/subscribe/${groupName}`;
 export const addNotificationGroupEndpoint = () =>

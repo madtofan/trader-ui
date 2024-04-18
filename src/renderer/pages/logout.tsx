@@ -1,14 +1,18 @@
 import Icons from '@/components/icons';
 import MainLayout from '@/components/layouts/main-layout';
 import { useEffect } from 'react';
+import { CONTEXT_KEYS, STORE_CHANNELS } from '../../shared-types';
 
 function Logout() {
   useEffect(() => {
     localStorage.setItem('bearerToken', '');
     localStorage.setItem('refreshToken', '');
-    if (window) {
-      window.location.href = '/';
-    }
+    window.electron.ipcRenderer.invoke(
+      STORE_CHANNELS.Set,
+      CONTEXT_KEYS.loggedIn,
+      false,
+    );
+    window.location.href = '/';
   }, []);
 
   return (

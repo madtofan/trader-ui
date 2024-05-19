@@ -4,9 +4,34 @@ import { DataTable } from '@/components/ui/data-table';
 import { TablePagination } from '@/components/ui/pagination';
 import { useGetTemplateList } from '@/hooks/templatingApi';
 import { cn } from '@/lib/utils';
-import { ColumnDef } from '@tanstack/react-table';
+import { CellContext, ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+
+interface TemplateInput {
+  name: string;
+  default_value: string;
+}
+
+function TemplateCell({ row }: CellContext<TemplateEndpointResponse, unknown>) {
+  const cellValue = row.getValue('template_inputs') as TemplateInput[];
+  return (
+    <>
+      {cellValue.map((cell) => (
+        <div className="py-1" key={cell.name}>
+          <div className="flex justify-between items-center">
+            <p className="text-sm text-muted-foreground">{`Input name: `}</p>
+            <p>{cell.name}</p>
+          </div>
+          <div className="flex justify-between items-center">
+            <p className="text-sm text-muted-foreground">{`Default value: `}</p>
+            <p>{cell.default_value}</p>
+          </div>
+        </div>
+      ))}
+    </>
+  );
+}
 
 export default function TemplatesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -30,6 +55,7 @@ export default function TemplatesPage() {
     {
       accessorKey: 'template_inputs',
       header: 'Inputs',
+      cell: TemplateCell,
     },
   ];
 

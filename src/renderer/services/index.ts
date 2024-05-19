@@ -30,7 +30,8 @@ export const initializeAxiosClient = () => {
   axiosClient.interceptors.request.use((config) => {
     const bearerToken = localStorage.getItem('bearerToken');
     config.headers.authorization = bearerToken ? `Bearer ${bearerToken}` : '';
-    axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
+    axios.defaults.headers.post['Content-Type'] =
+      'application/json;charset=utf-8';
     axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
     return config;

@@ -35,8 +35,13 @@ export const navsConfig: NavsConfig = {
       title: 'Configurations',
       items: [
         {
-          title: 'Notifications',
+          title: 'Workflow',
           href: '/dashboard/config',
+          items: [],
+        },
+        {
+          title: 'Notifications',
+          href: '/dashboard/config/notifications',
           items: [],
         },
         {

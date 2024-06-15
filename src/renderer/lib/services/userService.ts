@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
 import axios from 'axios';
+import { CONTEXT_KEYS, STORE_CHANNELS } from '@/../shared-types';
 import {
   authorizeRoleEndpoint,
   authorizeUserEndpoint,
@@ -14,7 +15,7 @@ import {
   rolesEndpoint,
   userEndpoint,
   verifyEndpoint,
-} from '@/config/api';
+} from '@/lib/config/api';
 import { RegisterEndpointRequest } from '@/bindings/user/RegisterEndpointRequest';
 import { UpdateEndpointRequest } from '@/bindings/user/UpdateEndpointRequest';
 import { LoginEndpointRequest } from '@/bindings/user/LoginEndpointRequest';
@@ -30,7 +31,6 @@ import { PermissionsListResponse } from '@/bindings/user/PermissionsListResponse
 import { UserListEndpointResponse } from '@/bindings/user/UserListEndpointResponse';
 import { QueryFunctionContext } from 'react-query';
 import { initializeAxiosClient } from '.';
-import { CONTEXT_KEYS, STORE_CHANNELS } from '../../shared-types';
 
 const axiosClient = initializeAxiosClient();
 

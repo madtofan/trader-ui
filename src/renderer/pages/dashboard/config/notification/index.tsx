@@ -2,7 +2,7 @@ import { NotificationMessage } from '@/bindings/notification/NotificationMessage
 import DashboardLayout from '@/components/layouts/dashboard';
 import { DataTable } from '@/components/ui/data-table';
 import { TablePagination } from '@/components/ui/pagination';
-import { useGetNotificationLogs } from '@/hooks/notificationApi';
+import { useGetNotificationLogs } from '@/lib/hooks/notificationApi';
 import { cn } from '@/lib/utils';
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';

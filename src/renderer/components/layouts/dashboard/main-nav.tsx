@@ -1,8 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
-import { siteConfig } from '@/config/site';
+import { siteConfig } from '@/lib/config/site';
 import { cn } from '@/lib/utils';
 import Icons from '@/components/icons';
-import { navsConfig } from '@/config/navs';
+import { navsConfig } from '@/lib/config/navs';
 
 export default function MainNav() {
   const location = useLocation();

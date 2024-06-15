@@ -2,7 +2,7 @@ import { TemplateEndpointResponse } from '@/bindings/templating/TemplateEndpoint
 import DashboardLayout from '@/components/layouts/dashboard';
 import { DataTable } from '@/components/ui/data-table';
 import { TablePagination } from '@/components/ui/pagination';
-import { useGetTemplateList } from '@/hooks/templatingApi';
+import { useGetTemplateList } from '@/lib/hooks/templatingApi';
 import { cn } from '@/lib/utils';
 import { CellContext, ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';

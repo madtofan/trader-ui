@@ -1,8 +1,8 @@
+import axios from 'axios';
+import { CONTEXT_KEYS, STORE_CHANNELS } from '@/../shared-types';
 import { ObtainTokenResponse } from '@/bindings/user/ObtainTokenResponse';
 import { RefreshtokenEndpointRequest } from '@/bindings/user/RefreshtokenEndpointRequest';
-import { API_SERVER, refreshEndpoint } from '@/config/api';
-import axios from 'axios';
-import { CONTEXT_KEYS, STORE_CHANNELS } from '../../shared-types';
+import { API_SERVER, refreshEndpoint } from '@/lib/config/api';
 
 const refreshToken = async () => {
   const token = localStorage.getItem('refreshToken');

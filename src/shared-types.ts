@@ -1,3 +1,5 @@
+import { Edge, Node } from 'reactflow';
+
 export type IBConnection = {
   connected?: boolean;
   host?: string;
@@ -73,11 +75,17 @@ export type Config = {
   accountSummaryKeys?: Array<keyof AccountSummary>;
 };
 
+export type Flow = {
+  edges?: Edge<any>[];
+  nodes?: Node<any>[];
+};
+
 export type ElectronContextType = {
   connection?: IBConnection;
   account?: Account;
   config?: Config;
   loggedIn?: boolean;
+  flow?: Flow;
 };
 
 export enum CONTEXT_KEYS {
@@ -90,7 +98,16 @@ export enum CONTEXT_KEYS {
   accountSummary = 'account.summary',
   config = 'config',
   configAccountSummaryKeys = 'config.accountSummaryKeys',
+  flow = 'flow',
+  flowEdges = 'flow.edges',
+  flowNodes = 'flow.nodes',
   loggedIn = 'loggedIn',
+}
+
+export enum STORE_CHANNELS {
+  Get = 'electron-store-get',
+  Set = 'electron-store-set',
+  Update = 'electron-store-update',
 }
 
 export enum IB_CHANNELS {
@@ -102,8 +119,20 @@ export enum IB_CHANNELS {
   GetAccountSummary = 'get-account-summary-ib',
 }
 
-export enum STORE_CHANNELS {
-  Get = 'electron-store-get',
-  Set = 'electron-store-set',
-  Update = 'electron-store-update',
+export enum FLOW_CHANNELS {
+  Run = 'run-flow',
+}
+
+export enum IF_CONDITIONS {
+  LargerThan = 'Larger Than',
+  LargerThanEqual = 'Larger Than Equal',
+  Equal = 'Equal',
+  Contains = 'Contains',
+}
+
+export enum MATH_OPERATOR {
+  Multiply = 'Multiply',
+  Divide = 'Divide',
+  Plus = 'Plus',
+  Subtract = 'Subtract',
 }

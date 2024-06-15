@@ -2,7 +2,7 @@ import { UserListEndpoint } from '@/bindings/user/UserListEndpoint';
 import DashboardLayout from '@/components/layouts/dashboard';
 import { DataTable } from '@/components/ui/data-table';
 import { TablePagination } from '@/components/ui/pagination';
-import { useGetUsers } from '@/hooks/userApi';
+import { useGetUsers } from '@/lib/hooks/userApi';
 import { cn } from '@/lib/utils';
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';

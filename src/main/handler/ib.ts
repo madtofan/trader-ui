@@ -9,6 +9,7 @@ import {
   IBConnection,
   AccountSummary,
 } from '../../shared-types';
+import { OptionalIb } from '../types';
 
 export const connectIb = async (
   store: Store,
@@ -37,8 +38,8 @@ export const connectIb = async (
     rejects(`${err.message} - code: ${code} - reqId: ${reqId}`);
   })
     .once(EventName.connected, () => {
-      store.set(CONTEXT_KEYS.connectionConnected, true);
       setIb(ib);
+      store.set(CONTEXT_KEYS.connectionConnected, true);
       mainWindow.webContents.send(STORE_CHANNELS.Update, getStoreValues(store));
       resolves(`connected!`);
     })
@@ -59,8 +60,9 @@ export const connectIb = async (
 export const disconnectIb = (
   store: Store,
   mainWindow: BrowserWindow,
-  ib?: IBApi,
+  getIb: () => OptionalIb,
 ) => {
+  const ib = getIb();
   if (!(ib && ib.isConnected)) {
     store.set(CONTEXT_KEYS.connectionConnected, false);
     mainWindow.webContents.send(STORE_CHANNELS.Update, getStoreValues(store));
@@ -74,8 +76,9 @@ export const disconnectIb = (
 export const getPositions = async (
   store: Store,
   mainWindow: BrowserWindow,
-  ib?: IBApi,
+  getIb: () => OptionalIb,
 ) => {
+  const ib = getIb();
   if (!(ib && ib.isConnected)) {
     store.set(CONTEXT_KEYS.connectionConnected, false);
     mainWindow.webContents.send(STORE_CHANNELS.Update, getStoreValues(store));
@@ -128,8 +131,9 @@ export const getPositions = async (
 export const getOpenOrders = async (
   store: Store,
   mainWindow: BrowserWindow,
-  ib?: IBApi,
+  getIb: () => OptionalIb,
 ) => {
+  const ib = getIb();
   if (!(ib && ib.isConnected)) {
     store.set(CONTEXT_KEYS.connectionConnected, false);
     mainWindow.webContents.send(STORE_CHANNELS.Update, getStoreValues(store));
@@ -162,8 +166,9 @@ export const getOpenOrders = async (
 export const getManagedAccounts = async (
   store: Store,
   mainWindow: BrowserWindow,
-  ib?: IBApi,
+  getIb: () => OptionalIb,
 ) => {
+  const ib = getIb();
   if (!(ib && ib.isConnected)) {
     store.set(CONTEXT_KEYS.connectionConnected, false);
     mainWindow.webContents.send(STORE_CHANNELS.Update, getStoreValues(store));
@@ -196,8 +201,9 @@ export const getManagedAccounts = async (
 export const getAccountSummary = async (
   store: Store,
   mainWindow: BrowserWindow,
-  ib?: IBApi,
+  getIb: () => OptionalIb,
 ) => {
+  const ib = getIb();
   if (!(ib && ib.isConnected)) {
     store.set(CONTEXT_KEYS.connectionConnected, false);
     mainWindow.webContents.send(STORE_CHANNELS.Update, getStoreValues(store));

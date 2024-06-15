@@ -10,7 +10,14 @@ import {
   getPositions,
 } from './ib';
 import { getStoreValues } from './store';
-import { IB_CHANNELS, STORE_CHANNELS } from '../../shared-types';
+import {
+  CONTEXT_KEYS,
+  FLOW_CHANNELS,
+  IB_CHANNELS,
+  STORE_CHANNELS,
+} from '../../shared-types';
+import { runFlow } from './flow';
+import { OptionalIb } from '../types';
 
 const store = new Store();
 
@@ -25,33 +32,47 @@ export const registerStore = (mainWindow: BrowserWindow) => {
   });
 };
 
-export const registerIb = (mainWindow: BrowserWindow) => {
-  let ib: IBApi;
-  const setIb = (newIb: IBApi) => {
-    ib = newIb;
-  };
+export const registerIb = (
+  mainWindow: BrowserWindow,
+  getIb: () => OptionalIb,
+  setIb: (newIb: IBApi) => void,
+) => {
+  const currentIb = getIb();
+  if (currentIb) {
+    store.set(CONTEXT_KEYS.connectionConnected, true);
+    mainWindow.webContents.send(STORE_CHANNELS.Update, getStoreValues(store));
+  }
 
   ipcMain.handle(IB_CHANNELS.Connect, async () => {
     return connectIb(store, mainWindow, setIb);
   });
 
   ipcMain.handle(IB_CHANNELS.Disconnect, async () => {
-    return disconnectIb(store, mainWindow, ib);
+    return disconnectIb(store, mainWindow, getIb);
   });
 
   ipcMain.handle(IB_CHANNELS.GetPositions, async () => {
-    return getPositions(store, mainWindow, ib);
+    return getPositions(store, mainWindow, getIb);
   });
 
   ipcMain.handle(IB_CHANNELS.GetOpenOrders, async () => {
-    return getOpenOrders(store, mainWindow, ib);
+    return getOpenOrders(store, mainWindow, getIb);
   });
 
   ipcMain.handle(IB_CHANNELS.GetManagedAccounts, async () => {
-    return getManagedAccounts(store, mainWindow, ib);
+    return getManagedAccounts(store, mainWindow, getIb);
   });
 
   ipcMain.handle(IB_CHANNELS.GetAccountSummary, async () => {
-    return getAccountSummary(store, mainWindow, ib);
+    return getAccountSummary(store, mainWindow, getIb);
+  });
+};
+
+export const registerFlow = (
+  mainWindow: BrowserWindow,
+  getIb: () => OptionalIb,
+) => {
+  ipcMain.handle(FLOW_CHANNELS.Run, async () => {
+    return runFlow(store, mainWindow, getIb);
   });
 };

@@ -1,7 +1,6 @@
 import './output.css';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import DashboardPage from './pages/dashboard';
-import ConfigPage from './pages/dashboard/config';
 import TemplatesPage from './pages/dashboard/config/templates';
 import DocumentationsPage from './pages/dashboard/docs';
 import LoginPage from './pages/login';
@@ -13,6 +12,7 @@ import VerifyPage from './pages/register/verify/[token]';
 import RolesPermissionsPage from './pages/dashboard/config/roles-permissions';
 import UsersPage from './pages/dashboard/config/users';
 import NotificationPage from './pages/dashboard/config/notification';
+import WorkflowPage from './pages/dashboard/config/workflow';
 
 export default function App() {
   return (
@@ -21,7 +21,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/dashboard/config" element={<ConfigPage />} />
+          <Route path="/dashboard/config" element={<WorkflowPage />} />
           <Route
             path="/dashboard/config/notification"
             element={<NotificationPage />}

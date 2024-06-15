@@ -1,4 +1,4 @@
-import userService from '@/services/userService';
+import userService from '@/lib/services/userService';
 import { useQuery, useMutation } from 'react-query';
 import { RegisterEndpointRequest } from '@/bindings/user/RegisterEndpointRequest';
 import { UpdateEndpointRequest } from '@/bindings/user/UpdateEndpointRequest';
@@ -6,12 +6,10 @@ import { LoginEndpointRequest } from '@/bindings/user/LoginEndpointRequest';
 import { AddRolePermissionRequest } from '@/bindings/user/AddRolePermissionRequest';
 import { AuthorizeRevokeUserRoleRequest } from '@/bindings/user/AuthorizeRevokeUserRoleRequest';
 import { AuthorizeRevokeRolePermissionRequest } from '@/bindings/user/AuthorizeRevokeRolePermissionRequest';
-import { MutationOptions } from '.';
+import { MutationOptions, QueryOptions } from '.';
 
-const useCurrentUser = () => {
-  return useQuery(['currentUser'], () => {
-    return userService.getCurrentUser();
-  });
+const useCurrentUser = (options?: QueryOptions) => {
+  return useQuery(['currentUser'], userService.getCurrentUser, options);
 };
 
 const useRegisterUser = (options?: MutationOptions) => {

@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { ListTemplateEndpointResponse } from '@/bindings/templating/ListTemplateEndpointResponse';
-import { removeTemplatingEndpoint, templatingEndpoint } from '@/config/api';
+import { removeTemplatingEndpoint, templatingEndpoint } from '@/lib/config/api';
 import { AddTemplateEndpointRequest } from '@/bindings/templating/AddTemplateEndpointRequest';
 import { TemplateEndpointResponse } from '@/bindings/templating/TemplateEndpointResponse';
 import { initializeAxiosClient } from '.';

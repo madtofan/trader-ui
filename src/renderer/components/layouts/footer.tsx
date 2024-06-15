@@ -1,19 +1,20 @@
 import { useContext } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { Link } from 'react-router-dom';
-import { siteConfig } from '@/config/site';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { siteConfig } from '@/lib/config/site';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import FormInput from '@/components/ui/form-input';
+import { toast } from '@/components/ui/use-toast';
 import {
   CONTEXT_KEYS,
   IBConnection,
   IB_CHANNELS,
   STORE_CHANNELS,
-} from '../../../shared-types';
-import { ElectronContext } from './providers';
+} from '@/../shared-types';
+import { ElectronContext } from '@/components/layouts/providers';
 
 const formSchema = z.object({
   host: z.string().ip({ version: 'v4' }),
@@ -40,13 +41,25 @@ function ConnectForm({ ibConnection }: { ibConnection?: IBConnection }) {
     );
     await window.electron.ipcRenderer
       .invoke(IB_CHANNELS.Connect, [])
-      .catch((err) => console.error(err));
+      .catch((err: Error) => {
+        toast({
+          title: 'Error connecting to IB',
+          description: err.message,
+          variant: 'destructive',
+        });
+      });
   };
 
   const handleDisconnect = () => {
     window.electron.ipcRenderer
       .invoke(IB_CHANNELS.Disconnect, [])
-      .catch((err) => console.log(err));
+      .catch((err: Error) => {
+        toast({
+          title: 'Error disconnectin from IB',
+          description: err.message,
+          variant: 'destructive',
+        });
+      });
   };
 
   return (

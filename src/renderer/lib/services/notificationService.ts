@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
+import { initializeAxiosClient } from '.';
 import axios from 'axios';
-import { QueryClient, QueryFunctionContext } from 'react-query';
 import { EventSourcePolyfill } from 'event-source-polyfill';
+import { QueryClient, QueryFunctionContext } from 'react-query';
 import {
   addNotificationGroupEndpoint,
   getNotificationsEndpoint,
   listNotificationEndpoint,
   removeNotificationGroupEndpoint,
   subscribeNotificationEndpoint,
-} from '@/config/api';
+} from '@/lib/config/api';
 import { SendNotificationEndpointRequest } from '@/bindings/notification/SendNotificationEndpointRequest';
 import { NotificationEndpointResponse } from '@/bindings/notification/NotificationEndpointResponse';
 import { NotificationLogsEndpointResponse } from '@/bindings/notification/NotificationLogsEndpointResponse';
 import { AddGroupEndpointRequest } from '@/bindings/notification/AddGroupEndpointRequest';
-import { initializeAxiosClient } from '.';
 
 const axiosClient = initializeAxiosClient();
 

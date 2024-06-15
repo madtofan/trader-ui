@@ -20,7 +20,7 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/components/ui/command';
-import { navsConfig } from '@/config/navs';
+import { navsConfig } from '@/lib/config/navs';
 import { ThemeContext } from '../providers';
 
 export default function CommandMenu({ ...props }: DialogProps) {

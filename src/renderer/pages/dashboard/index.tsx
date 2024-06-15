@@ -27,6 +27,7 @@ import {
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import { toast } from '@/components/ui/use-toast';
 
 function AccountContent({
   account,
@@ -42,11 +43,23 @@ function AccountContent({
   useEffect(() => {
     window.electron.ipcRenderer
       .invoke(IB_CHANNELS.GetPositions, [])
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        toast({
+          title: 'Error obtaining position',
+          description: err,
+          variant: 'destructive',
+        });
+      });
 
     window.electron.ipcRenderer
       .invoke(IB_CHANNELS.GetAccountSummary, [])
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        toast({
+          title: 'Error obtaining account summary',
+          description: err,
+          variant: 'destructive',
+        });
+      });
   }, []);
 
   const accountSummaryKeys = useMemo(() => {

@@ -1,11 +1,9 @@
-import { TemplateEndpointResponse } from '@/bindings/templating/TemplateEndpointResponse';
 import { Permissions } from '@/bindings/user/Permissions';
 import { Roles } from '@/bindings/user/Roles';
-import { RolesListResponse } from '@/bindings/user/RolesListResponse';
 import DashboardLayout from '@/components/layouts/dashboard';
 import { DataTable } from '@/components/ui/data-table';
 import { TablePagination } from '@/components/ui/pagination';
-import { useGetPermissions, useGetRoles } from '@/hooks/userApi';
+import { useGetPermissions, useGetRoles } from '@/lib/hooks/userApi';
 import { cn } from '@/lib/utils';
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';

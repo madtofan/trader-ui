@@ -1,4 +1,4 @@
-import templatingService from '@/services/templatingService';
+import templatingService from '@/lib/services/templatingService';
 import { useMutation, useQuery } from 'react-query';
 import { AddTemplateEndpointRequest } from '@/bindings/templating/AddTemplateEndpointRequest';
 import { MutationOptions } from '.';

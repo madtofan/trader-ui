@@ -11,3 +11,18 @@ export function resolveHtmlPath(htmlFileName: string) {
   }
   return `file://${path.resolve(__dirname, '../renderer/', htmlFileName)}`;
 }
+
+export function electronState<T>(
+  defaultValue: T,
+): [() => T, (newValue: T) => void] {
+  let value = defaultValue;
+  const getValue = () => {
+    return value;
+  };
+
+  const updateValue = (newValue: T) => {
+    value = newValue;
+  };
+
+  return [getValue, updateValue];
+}

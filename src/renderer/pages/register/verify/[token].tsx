@@ -1,6 +1,6 @@
 import Icons from '@/components/icons';
 import MainLayout from '@/components/layouts/main-layout';
-import { useVerifyRegistration } from '@/hooks/userApi';
+import { useVerifyRegistration } from '@/lib/hooks/userApi';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 export default function VerifyPage() {

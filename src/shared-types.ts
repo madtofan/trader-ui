@@ -64,6 +64,8 @@ export class AccountSummaryClass {
   Cryptocurrency = '';
 }
 
+export type EdgeValueType = 'string' | 'number';
+
 export interface AccountSummary extends AccountSummaryClass { }
 
 export type Account = {
@@ -136,3 +138,8 @@ export enum MATH_OPERATOR {
   Plus = 'Plus',
   Subtract = 'Subtract',
 }
+
+export interface IfConditionData {
+  condition: IF_CONDITIONS;
+}
+

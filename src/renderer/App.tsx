@@ -23,7 +23,7 @@ export default function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/dashboard/config" element={<WorkflowPage />} />
           <Route
-            path="/dashboard/config/notification"
+            path="/dashboard/config/notifications"
             element={<NotificationPage />}
           />
           <Route

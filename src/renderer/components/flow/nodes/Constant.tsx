@@ -29,6 +29,25 @@ export default function Constant({ id, data }: NodeProps<ConstantData>) {
 
   return (
     <Card>
+      <Handle
+        type="target"
+        position={Position.Top}
+        id="input"
+        isValidConnection={() => {
+          const edges = getEdges();
+          return !edges.some((edge) => edge.target === id);
+        }}
+      >
+        <div
+          className="source"
+          data-handleid="input"
+          data-nodeid={id}
+          data-handlepos="top"
+          style={{ width: 12, height: 12 }}
+        >
+          Input
+        </div>
+      </Handle>
       <CardHeader>Constant</CardHeader>
       <CardContent>
         <Input

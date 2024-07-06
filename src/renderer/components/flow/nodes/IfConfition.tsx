@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { Handle, NodeProps, Position, useReactFlow } from 'reactflow';
-import { IF_CONDITIONS } from '@/../shared-types';
+import { IF_CONDITIONS, IfConditionData } from '@/../shared-types';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import {
   Select,
@@ -10,11 +10,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-interface ConstantData {
-  condition: IF_CONDITIONS;
-}
-
-export default function IfCondition({ id, data }: NodeProps<ConstantData>) {
+export default function IfCondition({ id, data }: NodeProps<IfConditionData>) {
   const { getEdges, setNodes } = useReactFlow();
   const onChange = useCallback(
     (changedValue: string) => {
@@ -99,7 +95,7 @@ export default function IfCondition({ id, data }: NodeProps<ConstantData>) {
       <Handle
         type="source"
         position={Position.Bottom}
-        id="than"
+        id="then"
         isValidConnection={() => {
           const edges = getEdges();
           return !edges.some((edge) => edge.source === id);
@@ -107,12 +103,12 @@ export default function IfCondition({ id, data }: NodeProps<ConstantData>) {
       >
         <div
           className="source"
-          data-handleid="than"
+          data-handleid="then"
           data-nodeid={id}
           data-handlepos="bottom"
           style={{ width: 12, height: 12 }}
         >
-          Than
+          Then
         </div>
       </Handle>
       <Handle

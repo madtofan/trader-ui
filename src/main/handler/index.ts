@@ -12,12 +12,14 @@ import {
 import { getStoreValues } from './store';
 import {
   CONTEXT_KEYS,
+  FILE_CHANNELS,
   FLOW_CHANNELS,
   IB_CHANNELS,
   STORE_CHANNELS,
 } from '../../shared-types';
 import { runFlow } from './flow';
 import { OptionalIb } from '../types';
+import { deleteFile, getFileList, readFile, saveFile } from './file';
 
 const store = new Store();
 
@@ -76,3 +78,23 @@ export const registerFlow = (
     return runFlow(store, mainWindow, getIb);
   });
 };
+
+export const registerFileManager = (
+  mainWindow: BrowserWindow,
+) => {
+  ipcMain.handle(FILE_CHANNELS.GetList, async () => {
+    return getFileList(store, mainWindow);
+  });
+
+  ipcMain.handle(FILE_CHANNELS.SaveFile, async () => {
+    return saveFile(store, mainWindow);
+  });
+
+  ipcMain.handle(FILE_CHANNELS.ReadFile, async () => {
+    return deleteFile(store, mainWindow);
+  });
+
+  ipcMain.handle(FILE_CHANNELS.DeleteFile, async () => {
+    return readFile(store, mainWindow);
+  });
+}

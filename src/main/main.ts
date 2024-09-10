@@ -14,7 +14,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { electronState, resolveHtmlPath } from './util';
-import { registerFlow, registerIb, registerStore } from './handler';
+import { registerFileManager, registerFlow, registerIb, registerStore } from './handler';
 import { OptionalIb } from './types';
 
 class AppUpdater {
@@ -83,6 +83,7 @@ const createWindow = async () => {
   registerStore(mainWindow);
   registerIb(mainWindow, getIb, setIb);
   registerFlow(mainWindow, getIb);
+  registerFileManager(mainWindow);
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {

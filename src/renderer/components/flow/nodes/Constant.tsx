@@ -1,7 +1,7 @@
 import { ChangeEvent, useCallback } from 'react';
 import { Handle, NodeProps, Position, useReactFlow } from 'reactflow';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 
 interface ConstantData {
   value: string;
@@ -29,27 +29,29 @@ export default function Constant({ id, data }: NodeProps<ConstantData>) {
 
   return (
     <Card>
-      <Handle
-        type="target"
-        position={Position.Top}
-        id="input"
-        isValidConnection={() => {
-          const edges = getEdges();
-          return !edges.some((edge) => edge.target === id);
-        }}
-      >
-        <div
-          className="source"
-          data-handleid="input"
-          data-nodeid={id}
-          data-handlepos="top"
-          style={{ width: 12, height: 12 }}
+      <CardHeader>
+        <Handle
+          type="target"
+          position={Position.Top}
+          id="input"
+          isValidConnection={() => {
+            const edges = getEdges();
+            return !edges.some((edge) => edge.target === id);
+          }}
         >
-          Input
-        </div>
-      </Handle>
-      <CardHeader>Constant</CardHeader>
+          <div
+            className="source"
+            data-handleid="input"
+            data-nodeid={id}
+            data-handlepos="top"
+            style={{ width: 12, height: 12 }}
+          >
+            Input
+          </div>
+        </Handle>
+      </CardHeader>
       <CardContent>
+        Constant
         <Input
           name={id}
           onChange={onChange}
@@ -57,15 +59,17 @@ export default function Constant({ id, data }: NodeProps<ConstantData>) {
           className="nodrag"
         />
       </CardContent>
-      <Handle
-        type="source"
-        position={Position.Bottom}
-        id="output"
-        isValidConnection={() => {
-          const edges = getEdges();
-          return !edges.some((edge) => edge.source === id);
-        }}
-      />
+      <CardFooter>
+        <Handle
+          type="source"
+          position={Position.Bottom}
+          id="output"
+          isValidConnection={() => {
+            const edges = getEdges();
+            return !edges.some((edge) => edge.source === id);
+          }}
+        />
+      </CardFooter>
     </Card>
   );
 }

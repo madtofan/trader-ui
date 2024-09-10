@@ -1,4 +1,4 @@
-import { MainNavItem, SidebarNavItem } from '@/types/nav';
+import { MainNavItem, SidebarNavItem } from '@/lib/types/nav';
 
 interface NavsConfig {
   mainNav: MainNavItem[];

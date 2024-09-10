@@ -1,16 +1,18 @@
-// Disable no-unused-vars, broken for spread args
-/* eslint no-unused-vars: off */
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
-import { FLOW_CHANNELS, IB_CHANNELS, STORE_CHANNELS } from '../shared-types';
+import { FILE_CHANNELS, FLOW_CHANNELS, IB_CHANNELS, STORE_CHANNELS } from '../shared-types';
 
 export type Channels =
+  | FILE_CHANNELS.DeleteFile
+  | FILE_CHANNELS.GetList
+  | FILE_CHANNELS.ReadFile
+  | FILE_CHANNELS.SaveFile
   | FLOW_CHANNELS.Run
   | IB_CHANNELS.Connect
   | IB_CHANNELS.Disconnect
-  | IB_CHANNELS.GetPositions
-  | IB_CHANNELS.GetOpenOrders
-  | IB_CHANNELS.GetManagedAccounts
   | IB_CHANNELS.GetAccountSummary
+  | IB_CHANNELS.GetManagedAccounts
+  | IB_CHANNELS.GetOpenOrders
+  | IB_CHANNELS.GetPositions
   | STORE_CHANNELS.Get
   | STORE_CHANNELS.Set
   | STORE_CHANNELS.Update;

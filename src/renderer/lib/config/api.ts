@@ -1,4 +1,4 @@
-export const API_SERVER = 'http://zainulhassan.link/api';
+export const API_SERVER = 'http://localhost:8000/api';
 
 export const userEndpoint = () => `${API_SERVER}/user`;
 export const loginEndpoint = () => `${API_SERVER}/user/login`;

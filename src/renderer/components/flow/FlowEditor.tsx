@@ -30,11 +30,7 @@ import {
 import { getLayoutedElements } from '@/lib/utils';
 import { toast } from '@/components/ui/use-toast';
 import { FlowEditorContext } from '@/components/layouts/providers';
-import {
-  CONTEXT_KEYS,
-  FLOW_CHANNELS,
-  STORE_CHANNELS,
-} from '@/../shared-types';
+import { CONTEXT_KEYS, FLOW_CHANNELS, STORE_CHANNELS } from '@/../shared-types';
 
 export default function FlowEditor() {
   const triggerRef = useRef<HTMLSpanElement | null>(null);
@@ -151,7 +147,7 @@ export default function FlowEditor() {
             });
           }
         }}
-        className="border mx-auto w-full min-w-0 h-full"
+        className="mx-auto w-full h-screen"
         ref={triggerRef}
       >
         <ReactFlow
@@ -163,6 +159,7 @@ export default function FlowEditor() {
           defaultEdgeOptions={EDGE_OPTIONS}
           onConnect={onConnect}
           proOptions={{ hideAttribution: true }}
+          className="border"
           fitView
         >
           <Panel position="top-right">

@@ -125,6 +125,13 @@ export enum FLOW_CHANNELS {
   Run = 'run-flow',
 }
 
+export enum FILE_CHANNELS {
+  GetList = 'file-get-list',
+  ReadFile = 'file-read',
+  SaveFile = 'file-save',
+  DeleteFile = 'file-delete',
+}
+
 export enum IF_CONDITIONS {
   LargerThan = 'Larger Than',
   LargerThanEqual = 'Larger Than Equal',

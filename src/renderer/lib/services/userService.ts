@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable class-methods-use-this */
 import axios from 'axios';
 import { CONTEXT_KEYS, STORE_CHANNELS } from '@/../shared-types';
 import {
@@ -35,14 +33,55 @@ import { initializeAxiosClient } from '.';
 const axiosClient = initializeAxiosClient();
 
 class UserService {
+  authorizeRoleEndpoint: (roleName: string) => string;
+
+  authorizeUserEndpoint: (userId: string) => string;
+
+  listUsersEndpoint: () => string;
+
+  loginEndpoint: () => string;
+
+  permissionEndpoint: (permissionName: string) => string;
+
+  permissionsEndpoint: () => string;
+
+  revokeRoleEndpoint: (roleName: string) => string;
+
+  revokeUserEndpoint: (userId: string) => string;
+
+  roleEndpoint: (roleName: string) => string;
+
+  rolesEndpoint: () => string;
+
+  userEndpoint: () => string;
+
+  verifyEndpoint: (token: string) => string;
+
+  constructor() {
+    this.authorizeRoleEndpoint = authorizeRoleEndpoint;
+    this.authorizeUserEndpoint = authorizeUserEndpoint;
+    this.listUsersEndpoint = listUsersEndpoint;
+    this.loginEndpoint = loginEndpoint;
+    this.permissionEndpoint = permissionEndpoint;
+    this.permissionsEndpoint = permissionsEndpoint;
+    this.revokeRoleEndpoint = revokeRoleEndpoint;
+    this.revokeUserEndpoint = revokeUserEndpoint;
+    this.roleEndpoint = roleEndpoint;
+    this.rolesEndpoint = rolesEndpoint;
+    this.userEndpoint = userEndpoint;
+    this.verifyEndpoint = verifyEndpoint;
+  }
+
   async getCurrentUser() {
-    const res = await axiosClient.get<UserEndpointResponse>(userEndpoint());
+    const res = await axiosClient.get<UserEndpointResponse>(
+      this.userEndpoint(),
+    );
     return res;
   }
 
   async registerUser(data: RegisterEndpointRequest) {
     const res = await axiosClient.post<RegisterUserEndpointResponse>(
-      userEndpoint(),
+      this.userEndpoint(),
       data,
     );
     return res;
@@ -50,14 +89,17 @@ class UserService {
 
   async updateUser(data: UpdateEndpointRequest) {
     const res = await axiosClient.put<UserEndpointResponse>(
-      userEndpoint(),
+      this.userEndpoint(),
       data,
     );
     return res;
   }
 
   async login(data: LoginEndpointRequest) {
-    const res = await axios.post<ObtainTokenResponse>(loginEndpoint(), data);
+    const res = await axios.post<ObtainTokenResponse>(
+      this.loginEndpoint(),
+      data,
+    );
     localStorage.setItem('refreshToken', res.data.refresh_token);
     localStorage.setItem('bearerToken', res.data.bearer_token);
     window.electron.ipcRenderer.invoke(
@@ -73,7 +115,9 @@ class UserService {
   }
 
   async verifyRegistration(token: string) {
-    const res = await axios.get<UserEndpointResponse>(verifyEndpoint(token));
+    const res = await axios.get<UserEndpointResponse>(
+      this.verifyEndpoint(token),
+    );
     return res;
   }
 
@@ -82,7 +126,7 @@ class UserService {
   }: QueryFunctionContext<[string, number | null | undefined]>) {
     const [_, page] = queryKey;
     const res = await axios.get<UserListEndpointResponse>(
-      `${listUsersEndpoint()}?page=${page ?? 0}`,
+      `${this.listUsersEndpoint()}?page=${page ?? 0}`,
     );
     return res;
   }
@@ -92,14 +136,14 @@ class UserService {
   }: QueryFunctionContext<[string, number | null | undefined]>) {
     const [_, page] = queryKey;
     const res = await axiosClient.get<RolesListResponse>(
-      `${rolesEndpoint()}?page=${page ?? 0}`,
+      `${this.rolesEndpoint()}?page=${page ?? 0}`,
     );
     return res;
   }
 
   async addRole(data: AddRolePermissionRequest) {
     const res = await axiosClient.post<StatusMessageResponse>(
-      rolesEndpoint(),
+      this.rolesEndpoint(),
       data,
     );
     return res;
@@ -107,7 +151,7 @@ class UserService {
 
   async deleteRole(roleName: string) {
     const res = await axiosClient.delete<StatusMessageResponse>(
-      roleEndpoint(roleName),
+      this.roleEndpoint(roleName),
     );
     return res;
   }
@@ -117,14 +161,14 @@ class UserService {
   }: QueryFunctionContext<[string, number | null | undefined]>) {
     const [_, page] = queryKey;
     const res = await axiosClient.get<PermissionsListResponse>(
-      `${permissionsEndpoint()}?page=${page ?? 0}`,
+      `${this.permissionsEndpoint()}?page=${page ?? 0}`,
     );
     return res;
   }
 
   async addPermission(data: AddRolePermissionRequest) {
     const res = await axiosClient.post<StatusMessageResponse>(
-      permissionsEndpoint(),
+      this.permissionsEndpoint(),
       data,
     );
     return res;
@@ -132,14 +176,14 @@ class UserService {
 
   async deletePermission(permissionName: string) {
     const res = await axiosClient.delete<StatusMessageResponse>(
-      permissionEndpoint(permissionName),
+      this.permissionEndpoint(permissionName),
     );
     return res;
   }
 
   async authorizeUser(userId: string, data: AuthorizeRevokeUserRoleRequest) {
     const res = await axiosClient.post<StatusMessageResponse>(
-      authorizeUserEndpoint(userId),
+      this.authorizeUserEndpoint(userId),
       data,
     );
     return res;
@@ -147,7 +191,7 @@ class UserService {
 
   async revokeUser(userId: string, data: AuthorizeRevokeUserRoleRequest) {
     const res = await axiosClient.post<StatusMessageResponse>(
-      revokeUserEndpoint(userId),
+      this.revokeUserEndpoint(userId),
       data,
     );
     return res;
@@ -158,7 +202,7 @@ class UserService {
     data: AuthorizeRevokeRolePermissionRequest,
   ) {
     const res = await axiosClient.post<StatusMessageResponse>(
-      authorizeRoleEndpoint(roleName),
+      this.authorizeRoleEndpoint(roleName),
       data,
     );
     return res;
@@ -169,7 +213,7 @@ class UserService {
     data: AuthorizeRevokeRolePermissionRequest,
   ) {
     const res = await axiosClient.post<StatusMessageResponse>(
-      revokeRoleEndpoint(roleName),
+      this.revokeRoleEndpoint(roleName),
       data,
     );
     return res;

@@ -1,8 +1,8 @@
-import { MutationOptions } from '.';
 import { useMutation, useQuery } from 'react-query';
 import { AddGroupEndpointRequest } from '@/bindings/notification/AddGroupEndpointRequest';
 import { SendNotificationEndpointRequest } from '@/bindings/notification/SendNotificationEndpointRequest';
 import notificationService from '@/lib/services/notificationService';
+import { MutationOptions } from '.';
 
 const useSendNotification = (token: string, options?: MutationOptions) => {
   return useMutation({

@@ -1,18 +1,18 @@
+import { Providers } from '@/modules/components';
 import './output.css';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import DashboardPage from './pages/dashboard';
-import TemplatesPage from './pages/dashboard/config/templates';
-import DocumentationsPage from './pages/dashboard/docs';
-import LoginPage from './pages/login';
-import Logout from './pages/logout';
-import Providers from './components/layouts/providers';
-import RegisterPage from './pages/register';
-import PendingPage from './pages/register/pending';
-import VerifyPage from './pages/register/verify/[token]';
-import RolesPermissionsPage from './pages/dashboard/config/roles-permissions';
-import UsersPage from './pages/dashboard/config/users';
-import NotificationPage from './pages/dashboard/config/notification';
-import WorkflowPage from './pages/dashboard/config/workflow';
+import LoginPage from '@/modules/auth/login';
+import DashboardPage from '@/modules/dashboard';
+import WorkflowPage from '@/modules/workflow';
+import NotificationPage from '@/modules/notifications';
+import RolesPermissionsPage from '@/modules/roles-permissions';
+import TemplatesPage from '@/modules/templates';
+import UsersPage from '@/modules/users';
+import DocumentationsPage from '@/modules/docs';
+import RegisterPage from '@/modules/auth/register';
+import PendingPage from '@/modules/auth/register/pending';
+import VerifyPage from '@/modules/auth/register/verify/[token]';
+import Logout from '@/modules/auth/logout';
 
 export default function App() {
   return (

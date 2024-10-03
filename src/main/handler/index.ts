@@ -79,22 +79,20 @@ export const registerFlow = (
   });
 };
 
-export const registerFileManager = (
-  mainWindow: BrowserWindow,
-) => {
+export const registerFileManager = (mainWindow: BrowserWindow) => {
   ipcMain.handle(FILE_CHANNELS.GetList, async () => {
     return getFileList(store, mainWindow);
   });
 
-  ipcMain.handle(FILE_CHANNELS.SaveFile, async () => {
-    return saveFile(store, mainWindow);
+  ipcMain.handle(FILE_CHANNELS.SaveFile, async (event, fileName, flow) => {
+    return saveFile(store, mainWindow, fileName, flow);
   });
 
   ipcMain.handle(FILE_CHANNELS.ReadFile, async () => {
-    return deleteFile(store, mainWindow);
-  });
-
-  ipcMain.handle(FILE_CHANNELS.DeleteFile, async () => {
     return readFile(store, mainWindow);
   });
-}
+
+  ipcMain.handle(FILE_CHANNELS.DeleteFile, async (event, fileName) => {
+    return deleteFile(store, mainWindow, fileName);
+  });
+};
